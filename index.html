@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>云匣 - AI产品成长训练平台</title>
 <style>
+  .top-action-btn svg.icon[p-id="3440"] path {
+  fill: #475669;
+}
 :root {
   --primary: #10b981;
   --primary-dark: #059669;
@@ -54,13 +57,13 @@ body {
   min-height: 100vh;
 }
 
-/* Scrollbar */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--text-quaternary); border-radius: 3px; }
 
-/* ========== LEFT SIDEBAR (same as dashboard) ========== */
 .app-container { display: flex; min-height: 100vh; }
+
+/* ========== SIDEBAR ========== */
 .sidebar {
   width: 220px;
   background: var(--bg-primary);
@@ -69,9 +72,7 @@ body {
   display: flex;
   flex-direction: column;
   position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
+  left: 0; top: 0; bottom: 0;
   z-index: 100;
 }
 .logo-area { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
@@ -82,7 +83,7 @@ body {
   display: flex; align-items: center; justify-content: center;
   color: white; font-size: 18px;
 }
-.logo-text { font-size: 20px; font-weight: 700; color: var(--text-primary); }
+.logo-text { font-size: 20px; font-weight: 700; }
 .logo-sub { font-size: 12px; color: var(--text-tertiary); margin-bottom: 4px; }
 .logo-desc { font-size: 12px; color: var(--text-quaternary); margin-bottom: 24px; }
 
@@ -159,7 +160,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 24px;
+  margin-bottom: 18px;
 }
 .top-bar-left { display: flex; align-items: center; gap: 12px; }
 .page-title {
@@ -224,7 +225,7 @@ body {
   color: var(--text-quaternary); font-size: 14px;
 }
 
-/* ========== INSPIRATION METHODS ========== */
+/* ========== INSPIRATION METHODS - 左右结构 ========== */
 .inspiration-section { margin-bottom: 24px; }
 .method-cards {
   display: flex;
@@ -233,29 +234,44 @@ body {
 }
 .method-card {
   flex: 1;
-  min-width: 140px;
-  max-width: 180px;
-  padding: 16px;
+  min-width: 160px;
+  padding: 18px 12px;
   border-radius: var(--radius);
   border: 1px solid var(--border-color);
   background: var(--bg-primary);
   cursor: pointer;
   transition: var(--transition);
-  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 .method-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow);
 }
 .method-card .method-icon {
-  width: 40px; height: 40px;
-  border-radius: var(--radius);
-  display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 10px;
-  font-size: 20px;
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  flex-shrink: 0;
 }
-.method-card .method-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-.method-card .method-desc { font-size: 11px; color: var(--text-quaternary); }
+.method-card .method-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+.method-card .method-name {
+  font-size: 14px;
+  font-weight: 600;
+}
+.method-card .method-desc {
+  font-size: 11px;
+  color: var(--text-quaternary);
+}
 
 /* Method colors */
 .method-life .method-icon { background: var(--primary-light); }
@@ -343,6 +359,7 @@ body {
   align-items: flex-start;
   gap: 12px;
   transition: var(--transition);
+  position: relative;
 }
 .pool-banner.banner-opportunity { background: var(--primary-light); border: 1px solid var(--primary-border); }
 .pool-banner.banner-observe { background: var(--yellow-light); border: 1px solid var(--yellow-border); }
@@ -353,15 +370,22 @@ body {
 .pool-banner.banner-observe .banner-icon { color: var(--yellow); }
 .pool-banner.banner-archive .banner-icon { color: var(--red); }
 
-.pool-banner .banner-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-.pool-banner.banner-opportunity .banner-title { color: var(--primary-dark); }
-.pool-banner.banner-observe .banner-title { color: #b45309; }
-.pool-banner.banner-archive .banner-title { color: #b91c1c; }
+.pool-banner .banner-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.pool-banner.banner-opportunity .banner-title { color: #047857; }
+.pool-banner.banner-observe .banner-title { color: #92400e; }
+.pool-banner.banner-archive .banner-title { color: #991b1b; }
 
-.pool-banner .banner-desc { font-size: 13px; }
-.pool-banner.banner-opportunity .banner-desc { color: var(--primary); }
-.pool-banner.banner-observe .banner-desc { color: #d97706; }
-.pool-banner.banner-archive .banner-desc { color: #ef4444; }
+.pool-banner .banner-desc {
+  font-size: 13px;
+  font-weight: 500;
+}
+.pool-banner.banner-opportunity .banner-desc { color: #059669; }
+.pool-banner.banner-observe .banner-desc { color: #b45309; }
+.pool-banner.banner-archive .banner-desc { color: #dc2626; }
 
 /* ========== CARDS GRID ========== */
 .cards-grid {
@@ -416,8 +440,35 @@ body {
   cursor: pointer;
   color: var(--text-quaternary);
   transition: var(--transition);
+  position: relative;
 }
 .card-action-btn:hover { background: var(--bg-secondary); color: var(--text-primary); }
+.card-action-btn.favorited { color: var(--yellow); }
+
+/* Dropdown menu */
+.dropdown-menu {
+  position: absolute;
+  top: 32px; right: 0;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  min-width: 100px;
+  z-index: 50;
+  display: none;
+  overflow: hidden;
+}
+.dropdown-menu.show { display: block; }
+.dropdown-item {
+  padding: 8px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: var(--transition);
+  color: var(--text-secondary);
+}
+.dropdown-item:hover { background: var(--bg-secondary); }
+.dropdown-item.delete { color: var(--red); }
+.dropdown-item.delete:hover { background: var(--red-light); }
 
 .card-body {
   font-size: 13px;
@@ -496,6 +547,179 @@ body {
   color: var(--text-tertiary);
 }
 
+/* ========== MODAL ========== */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+}
+.modal-overlay.show { opacity: 1; visibility: visible; }
+
+.modal {
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  transform: scale(0.95);
+  transition: transform 0.2s ease;
+}
+.modal-overlay.show .modal { transform: scale(1); }
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-light);
+}
+.modal-title { font-size: 17px; font-weight: 600; }
+.modal-close {
+  width: 32px; height: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-quaternary);
+  font-size: 20px;
+  border: none; background: none;
+}
+.modal-close:hover { background: var(--bg-secondary); }
+
+.modal-body { padding: 24px; }
+
+.form-group { margin-bottom: 20px; }
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+.form-label .required { color: var(--red); }
+.form-input, .form-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  font-size: 14px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  outline: none;
+  transition: var(--transition);
+  font-family: var(--font-sans);
+}
+.form-input:focus, .form-textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(16,185,129,0.1);
+}
+.form-input::placeholder, .form-textarea::placeholder { color: var(--text-quaternary); }
+.form-textarea { min-height: 100px; resize: vertical; }
+
+/* Method selection in modal */
+.method-select-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.method-select-item {
+  padding: 10px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  cursor: pointer;
+  text-align: center;
+  transition: var(--transition);
+  position: relative;
+}
+.method-select-item:hover { border-color: var(--primary); }
+.method-select-item.selected {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+.method-select-item .check {
+  position: absolute;
+  top: 6px; right: 6px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  font-size: 10px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.method-select-item.selected .check { display: flex; }
+.method-select-item .ms-icon { font-size: 18px; margin-bottom: 4px; }
+.method-select-item .ms-name { font-size: 12px; font-weight: 600; }
+.method-select-item .ms-desc { font-size: 10px; color: var(--text-quaternary); }
+
+/* Pool selection in modal */
+.pool-select-group {
+  display: flex;
+  gap: 10px;
+}
+.pool-select-item {
+  flex: 1;
+  padding: 10px;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  cursor: pointer;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.pool-select-item:hover { border-color: var(--primary); }
+.pool-select-item.selected-opportunity {
+  background: var(--primary-light);
+  border-color: var(--primary);
+  color: var(--primary-dark);
+}
+.pool-select-item.selected-observe {
+  background: var(--yellow-light);
+  border-color: var(--yellow);
+  color: #b45309;
+}
+.pool-select-item.selected-archive {
+  background: var(--red-light);
+  border-color: var(--red);
+  color: #b91c1c;
+}
+
+.modal-footer {
+  padding: 16px 24px 24px;
+}
+.btn-primary {
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--radius);
+  background: var(--primary);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.btn-primary:hover { background: var(--primary-dark); }
+.btn-primary:disabled {
+  background: var(--text-quaternary);
+  cursor: not-allowed;
+}
+
 /* ========== TOAST ========== */
 .toast {
   position: fixed;
@@ -516,6 +740,124 @@ body {
   transform: translateX(-50%) translateY(0);
 }
 
+/* ========== BANNER CLOSE ========== */
+.pool-banner .banner-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-quaternary);
+  font-size: 16px;
+  border: none;
+  background: transparent;
+  transition: var(--transition);
+  line-height: 1;
+}
+.pool-banner .banner-close:hover { background: rgba(0,0,0,0.05); color: var(--text-secondary); }
+
+/* ========== BANNER CONFIRM DIALOG ========== */
+.banner-confirm-dialog {
+  display: none;
+  padding: 14px 20px;
+  border-radius: var(--radius);
+  margin-bottom: 20px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.banner-confirm-dialog.show { display: flex; }
+.banner-confirm-dialog .confirm-text { font-size: 13px; color: var(--text-secondary); }
+.banner-confirm-dialog .confirm-actions { display: flex; gap: 8px; }
+.banner-confirm-dialog .btn-confirm {
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: var(--transition);
+}
+.banner-confirm-dialog .btn-confirm:hover { background: var(--bg-secondary); }
+.banner-confirm-dialog .btn-confirm-primary {
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--primary);
+  background: var(--primary);
+  font-size: 13px;
+  cursor: pointer;
+  color: white;
+  transition: var(--transition);
+}
+.banner-confirm-dialog .btn-confirm-primary:hover { background: var(--primary-dark); }
+
+/* ========== POOL TABS CONTAINER ========== */
+.pool-tabs-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+}
+
+.pool-tabs-container .pool-tab {
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  background: transparent;
+}
+
+.pool-tabs-container .pool-tab[data-pool="opportunity"],
+.pool-tabs-container .pool-tab[data-pool="observe"],
+.pool-tabs-container .pool-tab[data-pool="archive"] {
+  border-color: transparent;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+}
+
+.pool-tabs-container .pool-tab.active-all {
+  border-color: transparent;
+  background: transparent;
+  color: var(--text-primary);
+}
+.pool-tabs-container .pool-tab.active-opportunity {
+  background: var(--primary-light);
+  border-color: transparent;
+  color: var(--primary-dark);
+}
+.pool-tabs-container .pool-tab.active-observe {
+  background: var(--yellow-light);
+  border-color: transparent;
+  color: #b45309;
+}
+.pool-tabs-container .pool-tab.active-archive {
+  background: var(--red-light);
+  border-color: transparent;
+  color: #b91c1c;
+}
+.top-bar-left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.page-subtitle {
+  margin-left: calc(12px + 0px); 
+  margin-top: 0;
+}
+.page-title {
+  margin: 0;
+}
 /* ========== RESPONSIVE ========== */
 @media (max-width: 1024px) {
   .sidebar { width: 200px; }
@@ -526,6 +868,7 @@ body {
   .main-content { margin-left: 0; padding: 16px; }
   .cards-grid { grid-template-columns: 1fr; }
   .method-cards { flex-wrap: wrap; }
+  .modal { width: 90%; }
 }
 </style>
 <base target="_blank">
@@ -545,7 +888,7 @@ body {
 
       <div class="nav-section">
         <div class="nav-label">训练旅程 TRAINING JOURNEY</div>
-        <div class="nav-item active" data-step="1">
+        <div class="nav-item active" data-step="1" onclick="switchStep(1)">
           <div class="timeline-connector"></div>
           <div class="step-num">1</div>
           <div class="nav-item-info">
@@ -554,7 +897,7 @@ body {
             <div class="nav-item-desc">捕捉灵感，发现机会</div>
           </div>
         </div>
-        <div class="nav-item" data-step="2">
+        <div class="nav-item" data-step="2" onclick="switchStep(2)">
           <div class="step-num">2</div>
           <div class="nav-item-info">
             <div class="nav-item-title">研 · 项目</div>
@@ -562,7 +905,7 @@ body {
             <div class="nav-item-desc">分析洞察，验证机会</div>
           </div>
         </div>
-        <div class="nav-item" data-step="3">
+        <div class="nav-item" data-step="3" onclick="switchStep(3)">
           <div class="step-num">3</div>
           <div class="nav-item-info">
             <div class="nav-item-title">思 · 复盘</div>
@@ -588,7 +931,7 @@ body {
 
   <!-- Main Content -->
   <main class="main-content">
-    <!-- Top Bar -->
+    <!-- Top Bar - 保留未登录状态视觉差异 -->
     <div class="top-bar">
       <div class="top-bar-left">
         <div>
@@ -604,80 +947,92 @@ body {
           <span>🔍</span>
           <input type="text" placeholder="搜索标题、内容、标签...">
         </div>
-        <span class="score-badge">36K</span>
-        <div class="top-action-btn">+</div>
         <div class="top-action-btn" style="position:relative;">
-          🔔
+          <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3440" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="22"><path d="M768.6 635.2h-0.4c-17.7-0.2-31.8-14.7-31.7-32.3 0.8-76.9 1.2-164.4 0.3-176.5-2.3-17 9.3-32.9 26.4-35.8 17.4-3 33.9 8.8 36.9 26.2 0.7 4 1.6 9.5 1.1 100.1-0.2 43.5-0.7 86.2-0.7 86.7-0.1 17.5-14.4 31.6-31.9 31.6z m-31.7-208.5c0 0.3 0.1 0.6 0.1 0.8 0-0.3-0.1-0.5-0.1-0.8z" p-id="3441"></path><path d="M768.4 456c-17.7 0-32-14.3-32-32 0-123.1-100.1-223.2-223.2-223.2S290 300.9 290 424c0 17.7-14.3 32-32 32s-32-14.3-32-32c0-76.7 29.9-148.8 84.1-203.1 54.2-54.2 126.4-84.1 203.1-84.1s148.8 29.9 203.1 84.1c54.2 54.2 84.1 126.4 84.1 203.1 0 17.7-14.4 32-32 32z" p-id="3442"></path><path d="M586.3 211.5c-3.1 0-6.2-0.4-9.2-1.3-20.7-6.2-42.2-9.3-63.9-9.3-21.7 0-43.2 3.1-63.9 9.3-8.8 2.6-18.2 1.4-26-3.4-7.8-4.8-13.1-12.7-14.7-21.7-1.1-6-1.6-12.2-1.6-18.3 0-28.6 11.4-54.9 32-73.9 19.7-18.2 46-28.2 74.2-28.2s54.5 10 74.2 28.2c20.6 19.1 32 45.4 32 73.9 0 6.1-0.5 12.3-1.6 18.3-1.6 9-6.9 16.9-14.7 21.7-5.1 3-10.9 4.7-16.8 4.7z m-73.1-83.1c-10.6 0-21.2 3.3-29.2 9.9 19.3-2 39-2 58.4 0-8-6.5-18.6-9.9-29.2-9.9zM258.1 630.1h-0.4c-17.7-0.2-31.8-14.7-31.7-32.3 0.8-76.9 1.2-164.4 0.3-176.5-2.3-17 9.3-32.9 26.4-35.8 17.4-3 33.9 8.8 36.9 26.2 0.7 4 1.6 9.5 1.1 100.1-0.2 43.5-0.7 86.2-0.7 86.7-0.1 17.5-14.4 31.6-31.9 31.6z m-31.7-208.5c0 0.3 0.1 0.6 0.1 0.9 0-0.4 0-0.7-0.1-0.9z" p-id="3443"></path><path d="M807.2 838h-0.2l-590.4-4c-22.6 0-42.9-10.8-54.2-28.8-10.7-16.9-11.8-38.1-3.1-57l69.3-162.7c6.9-16.3 25.7-23.8 42-16.9 16.3 6.9 23.8 25.7 16.9 42L219.7 770l586.4 4-67.8-163.6c-6.8-16.3 1-35 17.3-41.8 16.3-6.8 35 1 41.8 17.3l68.3 164.8v0.1c8 19.5 5.8 41.7-6 59.2-11.7 17.5-31.3 28-52.5 28z m-589.8-62.7z m589.1-0.2z" p-id="3444"></path><path d="M508.2 961.6c-41 0-79.7-16.8-109-47.4-28.7-30-44.4-69-44.4-110 0-17.7 14.3-32 32-32s32 14.3 32 32c0 50.6 40.9 93.4 89.4 93.4 50.4 0 89.4-50.2 89.4-93.4 0-17.7 14.3-32 32-32s32 14.3 32 32c0 38.5-16.1 77.9-44.2 108-29.7 31.9-68.5 49.4-109.2 49.4z" p-id="3445"></path></svg>
           <span style="position:absolute;top:4px;right:4px;width:8px;height:8px;background:var(--red);border-radius:50%;"></span>
         </div>
-        <!-- 未登录状态：显示"登陆"按钮 -->
+        <!-- 未登录状态：显示"登陆"按钮（而非用户头像） -->
         <a href="login.html" class="btn-login-outline">登陆</a>
       </div>
     </div>
 
-    <!-- Inspiration Methods -->
+    <!-- Inspiration Methods - 左右结构 -->
     <div class="inspiration-section">
       <div class="method-cards">
-        <div class="method-card method-life" onclick="showLoginTip()">
+        <div class="method-card method-life" onclick="openCreateModal('life')">
           <div class="method-icon">🌱</div>
-          <div class="method-name">生活观察</div>
-          <div class="method-desc">从日常中发现机会</div>
+          <div class="method-content">
+            <div class="method-name">生活观察</div>
+            <div class="method-desc">从日常中发现机会</div>
+          </div>
         </div>
-        <div class="method-card method-product" onclick="showLoginTip()">
+        <div class="method-card method-product" onclick="openCreateModal('product')">
           <div class="method-icon">📦</div>
-          <div class="method-name">产品解析</div>
-          <div class="method-desc">拆解优秀产品</div>
+          <div class="method-content">
+            <div class="method-name">产品解析</div>
+            <div class="method-desc">拆解优秀产品</div>
+          </div>
         </div>
-        <div class="method-card method-ai" onclick="showLoginTip()">
+        <div class="method-card method-ai" onclick="openCreateModal('ai')">
           <div class="method-icon">🔗</div>
-          <div class="method-name">AI 能力雷达</div>
-          <div class="method-desc">追踪 AI 发展能力</div>
+          <div class="method-content">
+            <div class="method-name">AI 能力雷达</div>
+            <div class="method-desc">追踪 AI 发展能力</div>
+          </div>
         </div>
-        <div class="method-card method-trend" onclick="showLoginTip()">
+        <div class="method-card method-trend" onclick="openCreateModal('trend')">
           <div class="method-icon">📈</div>
-          <div class="method-name">行业趋势</div>
-          <div class="method-desc">洞察行业变化</div>
+          <div class="method-content">
+            <div class="method-name">行业趋势</div>
+            <div class="method-desc">洞察行业变化</div>
+          </div>
         </div>
-        <div class="method-card method-connect" onclick="showLoginTip()">
+        <div class="method-card method-connect" onclick="openCreateModal('connect')">
           <div class="method-icon">⛓️</div>
-          <div class="method-name">连接训练</div>
-          <div class="method-desc">跨域连接思维</div>
+          <div class="method-content">
+            <div class="method-name">连接训练</div>
+            <div class="method-desc">跨域连接思维</div>
+          </div>
         </div>
-        <div class="method-card method-think" onclick="showLoginTip()">
+        <div class="method-card method-think" onclick="openCreateModal('think')">
           <div class="method-icon">❤️</div>
-          <div class="method-name">自想</div>
-          <div class="method-desc">自由思考空间</div>
+          <div class="method-content">
+            <div class="method-name">自想</div>
+            <div class="method-desc">自由思考空间</div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Pool Tabs -->
-    <div class="pool-tabs">
-      <div class="pool-tab active-all" data-pool="all">
-        <span>全部</span>
-        <span style="font-weight:600;margin-left:4px;">86</span>
-      </div>
-      <div class="pool-tab active-opportunity" data-pool="opportunity">
-        <span class="dot"></span>
-        <span>机会池</span>
-        <span style="font-weight:600;margin-left:4px;">32</span>
-      </div>
-      <div class="pool-tab" data-pool="observe">
-        <span class="dot" style="background:var(--yellow);"></span>
-        <span>观察池</span>
-        <span style="font-weight:600;margin-left:4px;">28</span>
-      </div>
-      <div class="pool-tab" data-pool="archive">
-        <span class="dot" style="background:var(--red);"></span>
-        <span>归档池</span>
-        <span style="font-weight:600;margin-left:4px;">26</span>
+    <!-- Pool Tabs - 整体白色背景带线框容器 -->
+    <div class="pool-tabs" id="poolTabs">
+      <div class="pool-tabs-container">
+        <div class="pool-tab active-all" data-pool="all" style="cursor:default;user-select:none;">
+          <span>全部</span>
+          <span style="font-weight:600;margin-left:4px;" id="count-all">8</span>
+        </div>
+        <div class="pool-tab active-opportunity" data-pool="opportunity" onclick="switchPool('opportunity')">
+          <span class="dot" style="background:var(--primary);"></span>
+          <span>机会池</span>
+          <span style="font-weight:600;margin-left:4px;" id="count-opportunity">4</span>
+        </div>
+        <div class="pool-tab" data-pool="observe" onclick="switchPool('observe')">
+          <span class="dot" style="background:var(--yellow);"></span>
+          <span>观察池</span>
+          <span style="font-weight:600;margin-left:4px;" id="count-observe">2</span>
+        </div>
+        <div class="pool-tab" data-pool="archive" onclick="switchPool('archive')">
+          <span class="dot" style="background:var(--red);"></span>
+          <span>归档池</span>
+          <span style="font-weight:600;margin-left:4px;" id="count-archive">2</span>
+        </div>
       </div>
       <div class="pool-actions">
         <div class="pool-filter-btn">筛选 ▼</div>
         <div class="pool-filter-btn">最新创建 ▼</div>
         <div class="view-toggle">
-          <div class="view-btn active">⊞</div>
-          <div class="view-btn">☰</div>
+          <div class="view-btn active" onclick="switchView('grid')">⊞</div>
+          <div class="view-btn" onclick="switchView('list')">☰</div>
         </div>
       </div>
     </div>
@@ -688,6 +1043,16 @@ body {
       <div>
         <div class="banner-title">当前查看：机会池</div>
         <div class="banner-desc">这里保存的是具有潜力、值得进一步分析和验证的灵感。</div>
+      </div>
+      <button class="banner-close" onclick="closeBanner()" title="关闭">✕</button>
+    </div>
+
+    <!-- Banner Close Confirm Dialog -->
+    <div class="banner-confirm-dialog" id="bannerConfirmDialog">
+      <span class="confirm-text">关闭后不再显示此提示？</span>
+      <div class="confirm-actions">
+        <button class="btn-confirm" onclick="confirmCloseBanner(false)">仅本次关闭</button>
+        <button class="btn-confirm-primary" onclick="confirmCloseBanner(true)">不再显示</button>
       </div>
     </div>
 
@@ -715,20 +1080,99 @@ body {
   </main>
 </div>
 
+<!-- Create Modal -->
+<div class="modal-overlay" id="createModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">创建灵感</div>
+      <button class="modal-close" onclick="closeCreateModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">灵感标题 <span class="required">*</span></label>
+        <input type="text" class="form-input" placeholder="请输入灵感标题..." id="createTitle" oninput="validateForm()">
+      </div>
+      <div class="form-group">
+        <label class="form-label">灵感详情 <span class="required">*</span></label>
+        <textarea class="form-textarea" placeholder="请输入灵感详情，描述你的观察、想法或分析..." id="createDetail" oninput="validateForm()"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">灵感方式 <span style="color:var(--text-tertiary);font-weight:400;">（点击卡片时默认选中对应方式，可手动更改）</span></label>
+        <div class="method-select-grid" id="methodSelect">
+          <div class="method-select-item selected" data-method="life" onclick="selectMethod('life')">
+            <div class="check">✓</div>
+            <div class="ms-icon">🌱</div>
+            <div class="ms-name" style="color:var(--primary-dark);">生活观察</div>
+            <div class="ms-desc">从日常中发现机会</div>
+          </div>
+          <div class="method-select-item" data-method="product" onclick="selectMethod('product')">
+            <div class="check">✓</div>
+            <div class="ms-icon">📦</div>
+            <div class="ms-name" style="color:var(--blue);">产品解析</div>
+            <div class="ms-desc">拆解优秀产品</div>
+          </div>
+          <div class="method-select-item" data-method="ai" onclick="selectMethod('ai')">
+            <div class="check">✓</div>
+            <div class="ms-icon">🔗</div>
+            <div class="ms-name" style="color:var(--purple);">AI能力雷达</div>
+            <div class="ms-desc">追踪AI发展能力</div>
+          </div>
+          <div class="method-select-item" data-method="trend" onclick="selectMethod('trend')">
+            <div class="check">✓</div>
+            <div class="ms-icon">📈</div>
+            <div class="ms-name" style="color:var(--primary-dark);">行业趋势</div>
+            <div class="ms-desc">洞察行业变化</div>
+          </div>
+          <div class="method-select-item" data-method="connect" onclick="selectMethod('connect')">
+            <div class="check">✓</div>
+            <div class="ms-icon">⛓️</div>
+            <div class="ms-name" style="color:var(--blue);">连接训练</div>
+            <div class="ms-desc">跨域连接思维</div>
+          </div>
+          <div class="method-select-item" data-method="think" onclick="selectMethod('think')">
+            <div class="check">✓</div>
+            <div class="ms-icon">❤️</div>
+            <div class="ms-name" style="color:var(--pink);">自想</div>
+            <div class="ms-desc">自由思考空间</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">归属状态池 <span style="color:var(--text-tertiary);font-weight:400;">（默认「机会池」，决定卡片顶部色条颜色）</span></label>
+        <div class="pool-select-group" id="poolSelect">
+          <div class="pool-select-item selected-opportunity" data-pool="opportunity" onclick="selectPool('opportunity')">
+            <span>✓</span>
+            <span>机会池</span>
+          </div>
+          <div class="pool-select-item" data-pool="observe" onclick="selectPool('observe')">
+            <span>观察池</span>
+          </div>
+          <div class="pool-select-item" data-pool="archive" onclick="selectPool('archive')">
+            <span>归档池</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-primary" id="submitBtn" onclick="submitCreate()" disabled>完成</button>
+    </div>
+  </div>
+</div>
+
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
-// Demo data - same as dashboard
-const demoCards = [
-  { id: 1, title: "社区共享厨房模式观察", content: "在一个老旧小区内，看到有居民自发组织共享厨房，每人每月100元使用费，按时段预约，解决了独居老人做饭难的问题，也创造了社区社交场景...", type: "life", pool: "opportunity", time: "2小时前" },
-  { id: 2, title: "AI 语音备忘录的使用场景", content: "使用语音备忘录记录想法越来越频繁，特别是开车、散步、洗澡时，语音输入比打字更自然，未来可以结合 AI 自动整理和分类...", type: "product", pool: "opportunity", time: "5小时前" },
-  { id: 3, title: "宠物情绪识别设备调研", content: "看到市面上有宠物情绪识别项圈，可以识别焦虑、兴奋等情绪，但价格偏高，功能单一，市场教育成本较高...", type: "trend", pool: "opportunity", time: "昨天 10:30" },
-  { id: 4, title: "线下自习室的运营机会", content: "观察到大学生对高质量自习室需求很大，但现有自习室存在座位紧张、环境嘈杂、价格不透明等问题，可优化空间体验...", type: "connect", pool: "opportunity", time: "昨天 09:15" },
-  { id: 5, title: "短视频平台的新功能记录", content: "某平台上线了「一起看视频」功能，但使用率很低，可能因为入口隐藏，或社交关系链不够强，暂时不考虑相关方向...", type: "product", pool: "observe", time: "05-18" },
-  { id: 6, title: "AR 试妆功能体验记录", content: "尝试了几个 AR 试妆产品，识别精度不稳定，色彩还原有偏差，用户留存率低，技术成熟度不足，暂时归档观察...", type: "life", pool: "observe", time: "05-16" },
-  { id: 7, title: "智能家居需求调研笔记", content: "调研发现用户更关注稳定性和隐私安全，对新功能兴趣度低，市场竞争激烈，进入壁垒高，暂不作为重点方向...", type: "trend", pool: "archive", time: "05-14" },
-  { id: 8, title: "知识付费内容形式思考", content: "长视频课程完课率低，用户更喜欢碎片化内容结合实践，可能需要重新设计产品形态，后续再深入研究...", type: "think", pool: "archive", time: "05-12" },
+// ============ DATA ============
+let cards = [
+  { id: 1, title: "社区共享厨房模式观察", content: "在一个老旧小区内，看到有居民自发组织共享厨房，每人每月100元使用费，按时段预约，解决了独居老人做饭难的问题，也创造了社区社交场景...", type: "life", pool: "opportunity", time: "2小时前", favorited: false },
+  { id: 2, title: "AI 语音备忘录的使用场景", content: "使用语音备忘录记录想法越来越频繁，特别是开车、散步、洗澡时，语音输入比打字更自然，未来可以结合 AI 自动整理和分类...", type: "product", pool: "opportunity", time: "5小时前", favorited: false },
+  { id: 3, title: "宠物情绪识别设备调研", content: "看到市面上有宠物情绪识别项圈，可以识别焦虑、兴奋等情绪，但价格偏高，功能单一，市场教育成本较高...", type: "trend", pool: "opportunity", time: "昨天 10:30", favorited: false },
+  { id: 4, title: "线下自习室的运营机会", content: "观察到大学生对高质量自习室需求很大，但现有自习室存在座位紧张、环境嘈杂、价格不透明等问题，可优化空间体验...", type: "connect", pool: "opportunity", time: "昨天 09:15", favorited: false },
+  { id: 5, title: "短视频平台的新功能记录", content: "某平台上线了「一起看视频」功能，但使用率很低，可能因为入口隐藏，或社交关系链不够强，暂时不考虑相关方向...", type: "product", pool: "observe", time: "05-18", favorited: false },
+  { id: 6, title: "AR 试妆功能体验记录", content: "尝试了几个 AR 试妆产品，识别精度不稳定，色彩还原有偏差，用户留存率低，技术成熟度不足，暂时归档观察...", type: "life", pool: "observe", time: "05-16", favorited: false },
+  { id: 7, title: "智能家居需求调研笔记", content: "调研发现用户更关注稳定性和隐私安全，对新功能兴趣度低，市场竞争激烈，进入壁垒高，暂不作为重点方向...", type: "trend", pool: "archive", time: "05-14", favorited: false },
+  { id: 8, title: "知识付费内容形式思考", content: "长视频课程完课率低，用户更喜欢碎片化内容结合实践，可能需要重新设计产品形态，后续再深入研究...", type: "think", pool: "archive", time: "05-12", favorited: false },
 ];
 
 const typeConfig = {
@@ -747,12 +1191,29 @@ const poolConfig = {
 };
 
 let currentPool = 'opportunity';
+let currentView = 'grid';
+let selectedMethod = 'life';
+let selectedPool = 'opportunity';
+let nextId = 9;
+
+// ============ RENDER ============
+function updateCounts() {
+  document.getElementById('count-all').textContent = cards.length;
+  document.getElementById('count-opportunity').textContent = cards.filter(c => c.pool === 'opportunity').length;
+  document.getElementById('count-observe').textContent = cards.filter(c => c.pool === 'observe').length;
+  document.getElementById('count-archive').textContent = cards.filter(c => c.pool === 'archive').length;
+}
 
 function renderCards(pool) {
   const grid = document.getElementById('cardsGrid');
-  let cards = pool === 'all' ? demoCards : demoCards.filter(c => c.pool === pool);
+  let displayCards = pool === 'all' ? cards : cards.filter(c => c.pool === pool);
 
-  grid.innerHTML = cards.map(card => {
+  if (displayCards.length === 0) {
+    grid.innerHTML = '<div style="text-align:center;padding:60px;color:var(--text-quaternary);">暂无灵感卡片</div>';
+    return;
+  }
+
+  grid.innerHTML = displayCards.map(card => {
     const typeInfo = typeConfig[card.type];
     return `
       <div class="inspiration-card">
@@ -761,8 +1222,14 @@ function renderCards(pool) {
           <div class="card-header">
             <div class="card-title">${card.title}</div>
             <div class="card-actions">
-              <div class="card-action-btn" onclick="showLoginTip()">☆</div>
-              <div class="card-action-btn" onclick="showLoginTip()">⋮</div>
+              <div class="card-action-btn ${card.favorited ? 'favorited' : ''}" onclick="toggleFavorite(${card.id}, event)">☆</div>
+              <div class="card-action-btn" onclick="toggleDropdown(${card.id}, event)" style="position:relative;">
+                ⋮
+                <div class="dropdown-menu" id="dropdown-${card.id}">
+                  <div class="dropdown-item" onclick="editCard(${card.id}, event)">✏️ 编辑</div>
+                  <div class="dropdown-item delete" onclick="deleteCard(${card.id}, event)">🗑️ 删除</div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="card-body">${card.content}</div>
@@ -790,21 +1257,21 @@ function updateBanner(pool) {
   banner.querySelector('.banner-desc').textContent = cfg.bannerDesc;
 }
 
-// Pool tab click
-document.querySelectorAll('.pool-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.pool-tab').forEach(t => {
-      t.classList.remove('active-all', 'active-opportunity', 'active-observe', 'active-archive');
-      t.style.background = ''; t.style.borderColor = ''; t.style.color = '';
-    });
-    const pool = tab.dataset.pool;
-    currentPool = pool;
-    if (pool === 'all') tab.classList.add('active-all');
-    else tab.classList.add(`active-${pool}`);
-    renderCards(pool);
-    updateBanner(pool);
+// ============ POOL SWITCHING ============
+function switchPool(pool) {
+  currentPool = pool;
+
+  document.querySelectorAll('.pool-tab').forEach(t => {
+    t.classList.remove('active-all', 'active-opportunity', 'active-observe', 'active-archive');
   });
-});
+
+  const activeTab = document.querySelector(`.pool-tab[data-pool="${pool}"]`);
+  if (pool === 'all') activeTab.classList.add('active-all');
+  else activeTab.classList.add(`active-${pool}`);
+
+  renderCards(pool);
+  updateBanner(pool);
+}
 
 // Pool tab hover for banner preview
 document.querySelectorAll('.pool-tab').forEach(tab => {
@@ -818,14 +1285,174 @@ document.querySelectorAll('.pool-tab').forEach(tab => {
   });
 });
 
-function showLoginTip() {
+// ============ SIDEBAR STEP SWITCHING ============
+function switchStep(step) {
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.classList.remove('active');
+    if (parseInt(item.dataset.step) === step) item.classList.add('active');
+  });
+  showToast(`已切换到步骤 ${step}`);
+}
+
+// ============ VIEW TOGGLE ============
+function switchView(view) {
+  currentView = view;
+  document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  renderCards(currentPool);
+}
+
+// ============ CARD ACTIONS ============
+function toggleFavorite(id, e) {
+  e.stopPropagation();
+  const card = cards.find(c => c.id === id);
+  if (card) {
+    card.favorited = !card.favorited;
+    renderCards(currentPool);
+    showToast(card.favorited ? '收藏成功' : '已取消收藏');
+  }
+}
+
+function toggleDropdown(id, e) {
+  e.stopPropagation();
+  document.querySelectorAll('.dropdown-menu').forEach(m => {
+    if (m.id !== `dropdown-${id}`) m.classList.remove('show');
+  });
+  const menu = document.getElementById(`dropdown-${id}`);
+  menu.classList.toggle('show');
+}
+
+function editCard(id, e) {
+  e.stopPropagation();
+  showToast('编辑功能开发中...');
+  document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
+}
+
+function deleteCard(id, e) {
+  e.stopPropagation();
+  if (confirm('确定要删除这条灵感吗？')) {
+    cards = cards.filter(c => c.id !== id);
+    updateCounts();
+    renderCards(currentPool);
+    showToast('删除成功');
+  }
+  document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
+}
+
+// Close dropdowns on outside click
+document.addEventListener('click', () => {
+  document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
+});
+
+// ============ CREATE MODAL ============
+function openCreateModal(method) {
+  selectedMethod = method || 'life';
+  selectedPool = 'opportunity';
+
+  document.getElementById('createTitle').value = '';
+  document.getElementById('createDetail').value = '';
+
+  selectMethod(selectedMethod);
+  selectPool(selectedPool);
+  validateForm();
+
+  document.getElementById('createModal').classList.add('show');
+}
+
+function closeCreateModal() {
+  document.getElementById('createModal').classList.remove('show');
+}
+
+function selectMethod(method) {
+  selectedMethod = method;
+  document.querySelectorAll('.method-select-item').forEach(item => {
+    item.classList.remove('selected');
+    if (item.dataset.method === method) item.classList.add('selected');
+  });
+}
+
+function selectPool(pool) {
+  selectedPool = pool;
+  document.querySelectorAll('.pool-select-item').forEach(item => {
+    item.className = 'pool-select-item';
+    if (item.dataset.pool === pool) item.classList.add(`selected-${pool}`);
+  });
+}
+
+function validateForm() {
+  const title = document.getElementById('createTitle').value.trim();
+  const detail = document.getElementById('createDetail').value.trim();
+  document.getElementById('submitBtn').disabled = !(title && detail);
+}
+
+function submitCreate() {
+  const title = document.getElementById('createTitle').value.trim();
+  const detail = document.getElementById('createDetail').value.trim();
+
+  if (!title || !detail) return;
+
+  const newCard = {
+    id: nextId++,
+    title: title,
+    content: detail,
+    type: selectedMethod,
+    pool: selectedPool,
+    time: "刚刚",
+    favorited: false
+  };
+
+  const poolCards = cards.filter(c => c.pool === selectedPool);
+  const insertIndex = poolCards.length > 0 ? cards.indexOf(poolCards[0]) : cards.length;
+  cards.splice(insertIndex, 0, newCard);
+
+  updateCounts();
+  closeCreateModal();
+  switchPool(selectedPool);
+  showToast('灵感创建成功');
+}
+
+// Close modal on overlay click
+document.getElementById('createModal').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('createModal')) closeCreateModal();
+});
+
+// ESC to close modal
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeCreateModal();
+});
+
+// ============ TOAST ============
+function showToast(message) {
   const toast = document.getElementById('toast');
-  toast.textContent = '请先登录后使用此功能';
+  toast.textContent = message;
   toast.classList.add('show');
   setTimeout(() => toast.classList.remove('show'), 2000);
 }
 
-// Initial render
+// ============ BANNER CLOSE ============
+function closeBanner() {
+  document.getElementById('poolBanner').style.display = 'none';
+  document.getElementById('bannerConfirmDialog').classList.add('show');
+}
+
+function confirmCloseBanner(neverShow) {
+  document.getElementById('bannerConfirmDialog').classList.remove('show');
+  if (neverShow) {
+    localStorage.setItem('bannerClosed', 'true');
+    showToast('已设置不再显示提示');
+  }
+}
+
+// Check if banner was previously closed
+function checkBannerState() {
+  if (localStorage.getItem('bannerClosed') === 'true') {
+    document.getElementById('poolBanner').style.display = 'none';
+  }
+}
+
+// ============ INIT ============
+checkBannerState();
+updateCounts();
 renderCards('opportunity');
 </script>
 
