@@ -1,153 +1,155 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>注册 · 云匣</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          brand: { 50:'#ECFDF5',100:'#D1FAE5',200:'#A7F3D0',500:'#10B981',600:'#059669',700:'#047857' }
-        },
-        fontFamily: { sans: ['"PingFang SC"', '"Microsoft YaHei"', 'system-ui', 'sans-serif'] }
-      }
-    }
-  }
-</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>注册 - 云匣</title>
+<style>
+:root {
+  --primary: #10b981; --primary-dark: #059669; --primary-light: #ecfdf5;
+  --primary-border: #bbf7d0; --blue: #3b82f6; --blue-light: #eff6ff;
+  --blue-border: #bfdbfe; --purple: #8b5cf6; --purple-light: #faf5ff;
+  --purple-border: #e9d5ff; --yellow: #f59e0b; --yellow-light: #fffbeb;
+  --yellow-border: #fde68a; --red: #ef4444; --red-light: #fef2f2;
+  --red-border: #fecaca; --pink: #f43f5e; --pink-light: #fff1f2;
+  --pink-border: #fecdd3; --text-primary: #1e293b; --text-secondary: #475569;
+  --text-tertiary: #64748b; --text-quaternary: #94a3b8;
+  --bg-primary: #ffffff; --bg-secondary: #f8fafc; --bg-tertiary: #f1f5f9;
+  --border-color: #e2e8f0; --border-light: #f1f5f9;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+  --shadow-lg: 0 4px 6px rgba(0,0,0,0.04), 0 10px 24px rgba(0,0,0,0.06);
+  --radius-sm: 6px; --radius: 10px; --radius-lg: 12px; --radius-xl: 16px;
+  --font-sans: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+  --transition: all 0.2s ease;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font-sans); background: var(--bg-secondary); color: var(--text-primary); font-size: 14px; line-height: 1.5; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+.register-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; }
+.modal { background: var(--bg-primary); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); }
+.auth-modal { width: 800px; height: 560px; display: flex; overflow: hidden; }
+.auth-left { width: 320px; background: var(--primary-light); padding: 40px 32px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+.auth-illustration-box { width: 160px; height: 160px; background: white; border-radius: 24px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 32px rgba(16,185,129,0.15); margin-bottom: 24px; position: relative; }
+.auth-illustration-box::before { content: '👤'; font-size: 64px; }
+.auth-illustration-box::after { content: ''; position: absolute; width: 120px; height: 120px; border: 2px dashed rgba(16,185,129,0.3); border-radius: 50%; animation: rotate 20s linear infinite; }
+@keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.auth-left-title { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+.auth-left-sub { font-size: 13px; color: var(--text-tertiary); }
+.auth-left-desc { font-size: 12px; color: var(--text-quaternary); margin-top: 4px; }
+.auth-right { flex: 1; padding: 32px; display: flex; flex-direction: column; }
+.auth-header { margin-bottom: 24px; }
+.auth-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+.auth-subtitle { font-size: 13px; color: var(--text-tertiary); }
+.form-group { margin-bottom: 16px; }
+.auth-input-wrap { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: var(--radius); background: var(--bg-primary); }
+.auth-input-wrap:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(16,185,129,0.1); }
+.auth-input-wrap .input-icon { color: var(--text-quaternary); font-size: 16px; }
+.auth-input-wrap input { flex: 1; border: none; outline: none; font-size: 14px; background: transparent; color: var(--text-primary); }
+.auth-input-wrap input::placeholder { color: var(--text-quaternary); }
+.code-btn { font-size: 12px; color: var(--primary); background: none; border: none; cursor: pointer; white-space: nowrap; font-weight: 500; }
+.code-btn:disabled { color: var(--text-quaternary); cursor: not-allowed; }
+.checkbox-wrap { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: var(--text-secondary); cursor: pointer; }
+.checkbox-wrap input { margin-top: 2px; accent-color: var(--primary); }
+.checkbox-wrap a { color: var(--primary); text-decoration: none; }
+.btn-primary { width: 100%; padding: 12px; border-radius: var(--radius); background: var(--primary); color: white; font-size: 14px; font-weight: 600; border: none; cursor: pointer; transition: var(--transition); }
+.btn-primary:hover { background: var(--primary-dark); }
+.auth-divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; color: var(--text-quaternary); font-size: 12px; }
+.auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--border-light); }
+.auth-social { display: flex; justify-content: center; gap: 16px; }
+.social-btn { width: 40px; height: 40px; border-radius: var(--radius); border: 1px solid var(--border-color); background: var(--bg-primary); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); font-size: 18px; }
+.social-btn:hover { background: var(--bg-secondary); }
+@media (max-width: 768px) { .auth-modal { flex-direction: column; width: 90%; height: auto; } .auth-left { width: 100%; padding: 24px; } }
+</style>
 </head>
-<body class="bg-gray-50 font-sans text-gray-800 antialiased">
+<body>
 
-  <!-- faded app backdrop -->
-  <div class="fixed inset-0 pointer-events-none select-none blur-[2px] opacity-60" aria-hidden="true">
-    <div class="flex min-h-screen">
-      <aside class="w-64 shrink-0 bg-gray-50/70 border-r border-gray-100 px-6 py-8">
-        <div class="flex items-center gap-2">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center">
-            <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5 text-white"><path d="M21 8l-9-5-9 5 9 5 9-5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M3 8v8l9 5 9-5V8" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-          </div>
-          <span class="text-lg font-bold text-gray-900">云匣</span>
-        </div>
-        <p class="text-xs text-gray-400 mt-2">AI 产品成长训练平台<br/>采集·分析·复盘</p>
-      </aside>
-      <main class="flex-1 px-10 py-8">
-        <h1 class="text-2xl font-bold text-gray-900">灵感方式选择</h1>
-        <div class="grid grid-cols-6 gap-4 mt-6">
-          <div class="h-16 rounded-xl border border-gray-100 bg-white"></div>
-          <div class="h-16 rounded-xl border border-gray-100 bg-white"></div>
-          <div class="h-16 rounded-xl border border-gray-100 bg-white"></div>
-          <div class="h-16 rounded-xl border border-gray-100 bg-white"></div>
-          <div class="h-16 rounded-xl border border-gray-100 bg-white"></div>
-          <div class="h-16 rounded-xl border border-gray-100 bg-white"></div>
-        </div>
-        <div class="grid grid-cols-4 gap-4 mt-8">
-          <div class="h-40 rounded-xl border border-gray-100 bg-white"></div>
-          <div class="h-40 rounded-xl border border-gray-100 bg-white"></div>
-          <div class="h-40 rounded-xl border border-gray-100 bg-white"></div>
-          <div class="h-40 rounded-xl border border-gray-100 bg-white"></div>
-        </div>
-      </main>
+<div class="register-bg">
+  <div class="modal auth-modal">
+    <div class="auth-left">
+      <div class="auth-illustration-box"></div>
+      <div class="auth-left-title">欢迎加入云匣</div>
+      <div class="auth-left-sub">创建账号，开启你的</div>
+      <div class="auth-left-desc">AI 产品训练之旅</div>
     </div>
-  </div>
-
-  <!-- dark overlay -->
-  <div class="fixed inset-0 bg-gray-900/10 pointer-events-none"></div>
-
-  <!-- register card -->
-  <div class="relative z-10 min-h-screen flex items-center justify-center p-6">
-    <div class="relative w-full max-w-3xl bg-white rounded-2xl shadow-2xl overflow-hidden flex">
-
-      <!-- 关闭按钮：返回 index.html -->
-      <a href="index.html" class="absolute top-4 right-4 z-10 w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-400">
-        <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-      </a>
-
-      <!-- left panel -->
-      <div class="hidden md:flex w-1/2 bg-gradient-to-br from-brand-50 via-emerald-50 to-teal-100 flex-col items-center justify-center px-10 py-14 text-center relative overflow-hidden">
-        <div class="absolute -top-10 -left-10 w-40 h-40 rounded-full bg-brand-100/60"></div>
-        <div class="absolute -bottom-16 -right-10 w-52 h-52 rounded-full bg-teal-100/60"></div>
-
-        <h2 class="text-2xl font-bold text-gray-900 relative z-10">欢迎加入云匣</h2>
-        <p class="text-sm text-gray-500 mt-2 relative z-10">创建账号，开启你的</p>
-        <p class="text-sm text-gray-500 relative z-10">AI 产品训练之旅</p>
-
-        <div class="relative z-10 mt-10">
-          <div class="w-32 h-32 rounded-full bg-white/70 flex items-center justify-center shadow-inner mx-auto">
-            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center shadow-lg">
-              <svg viewBox="0 0 24 24" fill="none" class="w-8 h-8 text-white"><circle cx="12" cy="8" r="3.2" stroke="currentColor" stroke-width="1.5"/><path d="M5 20c0-3.3 3.1-6 7-6s7 2.7 7 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </div>
-          </div>
-          <div class="w-40 h-4 bg-brand-100/70 rounded-full blur-sm mx-auto -mt-2"></div>
-        </div>
+    <div class="auth-right">
+      <div class="auth-header">
+        <div class="auth-title">注册账号</div>
+        <div class="auth-subtitle">已有账号？<a href="login.html" style="color:var(--primary);text-decoration:none;font-weight:500;">去登录</a></div>
       </div>
-
-      <!-- right panel: form -->
-      <div class="w-full md:w-1/2 px-10 py-12">
-        <div class="flex items-start justify-between">
-          <h3 class="text-xl font-bold text-gray-900">注册账号</h3>
-          <!-- 跳转登录页 -->
-          <p class="text-xs text-gray-400 mt-1">已有账号？<a href="login.html" class="text-brand-600 font-semibold hover:underline">去登录</a></p>
+      <form class="auth-form" onsubmit="handleRegister(event)">
+        <div class="form-group">
+          <div class="auth-input-wrap">
+            <span class="input-icon">📱</span>
+            <input type="text" placeholder="请输入手机号" required>
+          </div>
         </div>
-
-        <!-- 注册表单：提交跳转 dashboard.html -->
-        <form class="mt-6 space-y-4" onsubmit="event.preventDefault(); window.location.href='dashboard.html';">
-          <div class="relative">
-            <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4 text-gray-300 absolute left-3 top-1/2 -translate-y-1/2"><rect x="6" y="2.5" width="12" height="19" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M11 18h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            <input type="text" placeholder="请输入手机号" class="w-full pl-9 pr-3 py-2.5 text-sm rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-200"/>
+        <div class="form-group">
+          <div class="auth-input-wrap">
+            <span class="input-icon">🔢</span>
+            <input type="text" placeholder="请输入验证码" required style="flex:1;">
+            <button type="button" class="code-btn" id="codeBtn" onclick="sendCode()">获取验证码</button>
           </div>
-
-          <div class="relative flex items-center">
-            <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4 text-gray-300 absolute left-3"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.5"/><path d="M20 12a8 8 0 11-3-6.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            <input type="text" placeholder="请输入验证码" class="w-full pl-9 pr-28 py-2.5 text-sm rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-200"/>
-            <button type="button" class="absolute right-1.5 px-3 py-1.5 rounded-md bg-brand-50 text-brand-600 text-xs font-semibold whitespace-nowrap hover:bg-brand-100">获取验证码</button>
+        </div>
+        <div class="form-group">
+          <div class="auth-input-wrap">
+            <span class="input-icon">🔒</span>
+            <input type="password" placeholder="请设置登录密码" required id="pwd1">
+            <span class="input-icon" style="cursor:pointer;" onclick="togglePwd('pwd1')">👁</span>
           </div>
-
-          <div class="relative">
-            <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4 text-gray-300 absolute left-3 top-1/2 -translate-y-1/2"><rect x="4" y="10" width="16" height="10" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M7 10V7a5 5 0 0110 0v3" stroke="currentColor" stroke-width="1.5"/></svg>
-            <input id="pw1" type="password" placeholder="请设置登录密码" class="w-full pl-9 pr-9 py-2.5 text-sm rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-200"/>
-            <button type="button" onclick="const i=document.getElementById('pw1'); i.type = i.type==='password' ? 'text' : 'password';" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300">
-              <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/></svg>
-            </button>
+        </div>
+        <div class="form-group">
+          <div class="auth-input-wrap">
+            <span class="input-icon">🔒</span>
+            <input type="password" placeholder="请确认登录密码" required id="pwd2">
+            <span class="input-icon" style="cursor:pointer;" onclick="togglePwd('pwd2')">👁</span>
           </div>
-
-          <div class="relative">
-            <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4 text-gray-300 absolute left-3 top-1/2 -translate-y-1/2"><rect x="4" y="10" width="16" height="10" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M7 10V7a5 5 0 0110 0v3" stroke="currentColor" stroke-width="1.5"/></svg>
-            <input id="pw2" type="password" placeholder="请输入确认登录密码" class="w-full pl-9 pr-9 py-2.5 text-sm rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-200"/>
-            <button type="button" onclick="const i=document.getElementById('pw2'); i.type = i.type==='password' ? 'text' : 'password';" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300">
-              <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/></svg>
-            </button>
-          </div>
-
-          <label class="flex items-start gap-1.5 text-xs text-gray-400 pt-1 cursor-pointer">
-            <input type="checkbox" class="w-3.5 h-3.5 mt-0.5 rounded border-gray-300 text-brand-600 focus:ring-brand-200"/>
-            我已阅读并同意<a href="#" class="text-brand-600 hover:underline">《用户协议》</a>和<a href="#" class="text-brand-600 hover:underline">《隐私政策》</a>
+        </div>
+        <div class="form-group">
+          <label class="checkbox-wrap">
+            <input type="checkbox" required id="agree">
+            <span>我已阅读并同意<a href="#">《用户协议》</a>和<a href="#">《隐私政策》</a></span>
           </label>
-
-          <button type="submit" class="w-full py-2.5 rounded-lg bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold transition">注册</button>
-        </form>
-
-        <div class="flex items-center gap-3 my-6">
-          <div class="flex-1 h-px bg-gray-100"></div>
-          <span class="text-xs text-gray-300">或使用以下方式注册</span>
-          <div class="flex-1 h-px bg-gray-100"></div>
         </div>
-
-        <div class="flex items-center justify-center gap-4">
-          <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50">
-            <svg viewBox="0 0 24 24" class="w-5 h-5" fill="#22C55E"><path d="M8.6 3C4.7 3 1.5 5.7 1.5 9.1c0 1.9 1 3.6 2.6 4.8L3.4 16l2.3-1.1c.7.2 1.5.3 2.3.3h.4c-.1-.4-.2-.8-.2-1.2 0-3.4 3.2-6.1 7.2-6.1h.3C15.2 5 12.2 3 8.6 3z"/><path d="M16.6 8.4c-3.4 0-6.1 2.4-6.1 5.3 0 2.9 2.7 5.3 6.1 5.3.7 0 1.4-.1 2-.3l2 1-.6-1.8c1.3-.9 2.1-2.3 2.1-4.2 0-2.9-2.7-5.3-6.1-5.3z" fill-opacity="0.85"/></svg>
-          </button>
-          <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50">
-            <svg viewBox="0 0 24 24" class="w-5 h-5" fill="#3B82F6"><path d="M22 12c0-5.5-4.5-10-10-10S2 6.5 2 12c0 4.4 3.2 8.4 7.5 9.6v-6.8H7v-2.8h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6v1.9H15l-.4 2.8h-2.1v6.8C18.8 20.4 22 16.4 22 12z"/></svg>
-          </button>
-          <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50">
-            <svg viewBox="0 0 24 24" class="w-5 h-5"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 01-2 3v2.5h3.2c1.9-1.8 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0012 22z"/><path fill="#FBBC05" d="M6.4 14a6 6 0 010-4.1V7.3H3.1a10 10 0 000 9.4l3.3-2.6z"/><path fill="#EA4335" d="M12 6.3c1.5 0 2.8.5 3.8 1.5l2.8-2.8A9.6 9.6 0 0012 2a10 10 0 00-8.9 5.3l3.3 2.6C7.2 8 9.4 6.3 12 6.3z"/></svg>
-          </button>
-        </div>
+        <button type="submit" class="btn-primary">注册</button>
+      </form>
+      <div class="auth-divider">或使用以下方式注册</div>
+      <div class="auth-social">
+        <div class="social-btn" title="微信注册">💬</div>
+        <div class="social-btn" title="飞书注册">📋</div>
+        <div class="social-btn" title="Google注册">🔍</div>
       </div>
     </div>
   </div>
+</div>
+
+<script>
+function togglePwd(id) {
+  const input = document.getElementById(id);
+  input.type = input.type === 'password' ? 'text' : 'password';
+}
+function sendCode() {
+  const btn = document.getElementById('codeBtn');
+  let sec = 60;
+  btn.disabled = true;
+  btn.textContent = sec + 's';
+  const timer = setInterval(() => {
+    sec--;
+    btn.textContent = sec + 's';
+    if (sec <= 0) {
+      clearInterval(timer);
+      btn.disabled = false;
+      btn.textContent = '获取验证码';
+    }
+  }, 1000);
+}
+function handleRegister(e) {
+  e.preventDefault();
+  if (!document.getElementById('agree').checked) {
+    alert('请阅读并同意用户协议和隐私政策');
+    return;
+  }
+  window.location.href = 'dashboard.html';
+}
+</script>
 
 </body>
 </html>

@@ -1,399 +1,1434 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>云匣 · AI 产品成长训练平台</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          brand: {
-            50: '#ECFDF5',
-            100: '#D1FAE5',
-            200: '#A7F3D0',
-            500: '#10B981',
-            600: '#059669',
-            700: '#047857',
-          }
-        },
-        fontFamily: {
-          sans: ['"PingFang SC"', '"Microsoft YaHei"', 'system-ui', 'sans-serif'],
-        }
-      }
-    }
-  }
-</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>云匣 - AI产品成长训练平台</title>
 <style>
-  .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 3px; }
+:root {
+  --primary: #10b981;
+  --primary-dark: #059669;
+  --primary-light: #ecfdf5;
+  --primary-border: #bbf7d0;
+  --blue: #3b82f6;
+  --blue-light: #eff6ff;
+  --blue-border: #bfdbfe;
+  --purple: #8b5cf6;
+  --purple-light: #faf5ff;
+  --purple-border: #e9d5ff;
+  --yellow: #f59e0b;
+  --yellow-light: #fffbeb;
+  --yellow-border: #fde68a;
+  --red: #ef4444;
+  --red-light: #fef2f2;
+  --red-border: #fecaca;
+  --pink: #f43f5e;
+  --pink-light: #fff1f2;
+  --pink-border: #fecdd3;
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-tertiary: #64748b;
+  --text-quaternary: #94a3b8;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f1f5f9;
+  --border-color: #e2e8f0;
+  --border-light: #f1f5f9;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+  --shadow-lg: 0 4px 6px rgba(0,0,0,0.04), 0 10px 24px rgba(0,0,0,0.06);
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --transition: all 0.2s ease;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--text-quaternary); border-radius: 3px; }
+
+.app-container { display: flex; min-height: 100vh; }
+
+/* ========== SIDEBAR ========== */
+.sidebar {
+  width: 220px;
+  background: var(--bg-primary);
+  border-right: 1px solid var(--border-color);
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+  z-index: 100;
+}
+.logo-area { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.logo-icon {
+  width: 36px; height: 36px;
+  background: var(--primary);
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 18px;
+}
+.logo-text { font-size: 20px; font-weight: 700; }
+.logo-sub { font-size: 12px; color: var(--text-tertiary); margin-bottom: 4px; }
+.logo-desc { font-size: 12px; color: var(--text-quaternary); margin-bottom: 24px; }
+
+.nav-section { margin-bottom: 24px; }
+.nav-label {
+  font-size: 11px; color: var(--text-quaternary);
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: 12px; padding-left: 8px;
+}
+.nav-item {
+  display: flex; align-items: center;
+  gap: 12px; padding: 12px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: var(--transition);
+  margin-bottom: 4px;
+  position: relative;
+}
+.nav-item:hover { background: var(--bg-secondary); }
+.nav-item.active {
+  background: var(--primary-light);
+  border: 1px solid var(--primary-border);
+}
+.nav-item .step-num {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 600;
+  flex-shrink: 0;
+}
+.nav-item.active .step-num { background: var(--primary); color: white; }
+.nav-item:not(.active) .step-num { background: var(--bg-tertiary); color: var(--text-tertiary); }
+.nav-item-info { flex: 1; }
+.nav-item-title { font-size: 14px; font-weight: 600; }
+.nav-item.active .nav-item-title { color: var(--primary-dark); }
+.nav-item-desc { font-size: 11px; color: var(--text-quaternary); margin-top: 2px; }
+
+.timeline-connector {
+  position: absolute;
+  left: 24px; top: 44px;
+  width: 2px; height: 20px;
+  background: var(--border-color);
+}
+
+.sidebar-bottom { margin-top: auto; }
+.sidebar-setting {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 12px; border-radius: var(--radius);
+  cursor: pointer; color: var(--text-tertiary);
+  font-size: 14px; transition: var(--transition);
+}
+.sidebar-setting:hover { background: var(--bg-secondary); }
+.growth-banner {
+  margin-top: 16px; padding: 16px;
+  background: var(--primary-light);
+  border: 1px solid var(--primary-border);
+  border-radius: var(--radius);
+  text-align: center;
+}
+.growth-banner .star { font-size: 20px; color: var(--primary); margin-bottom: 4px; }
+.growth-banner .title { font-size: 13px; font-weight: 600; color: var(--primary-dark); }
+.growth-banner .desc { font-size: 11px; color: var(--primary); margin-top: 2px; }
+
+/* ========== MAIN CONTENT ========== */
+.main-content {
+  flex: 1;
+  margin-left: 220px;
+  padding: 24px 32px;
+  min-height: 100vh;
+}
+
+/* ========== TOP BAR ========== */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.top-bar-left { display: flex; align-items: center; gap: 12px; }
+.page-title {
+  font-size: 20px; font-weight: 700;
+  display: flex; align-items: center; gap: 8px;
+}
+.page-title .indicator {
+  width: 4px; height: 20px;
+  background: var(--primary);
+  border-radius: 2px;
+}
+.page-subtitle { font-size: 13px; color: var(--text-tertiary); margin-top: 4px; }
+
+.search-box {
+  display: flex; align-items: center;
+  gap: 8px; padding: 8px 16px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  width: 280px;
+}
+.search-box input {
+  border: none; outline: none;
+  background: transparent; font-size: 13px;
+  color: var(--text-primary); width: 100%;
+}
+.search-box input::placeholder { color: var(--text-quaternary); }
+
+.top-actions { display: flex; align-items: center; gap: 12px; }
+.top-action-btn {
+  width: 36px; height: 36px;
+  border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  cursor: pointer; transition: var(--transition);
+  color: var(--text-secondary); font-size: 16px;
+}
+.top-action-btn:hover { background: var(--bg-secondary); }
+.user-avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--primary);
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 14px; font-weight: 600;
+  cursor: pointer;
+}
+
+/* ========== INSPIRATION METHODS - 左右结构 ========== */
+.inspiration-section { margin-bottom: 24px; }
+.method-cards {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.method-card {
+  flex: 1;
+  min-width: 160px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.method-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+.method-card .method-icon {
+  width: 40px; height: 40px;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.method-card .method-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+.method-card .method-name {
+  font-size: 14px;
+  font-weight: 600;
+}
+.method-card .method-desc {
+  font-size: 11px;
+  color: var(--text-quaternary);
+}
+
+/* Method colors */
+.method-life .method-icon { background: var(--primary-light); }
+.method-life .method-name { color: var(--primary-dark); }
+.method-product .method-icon { background: var(--blue-light); }
+.method-product .method-name { color: var(--blue); }
+.method-ai .method-icon { background: var(--purple-light); }
+.method-ai .method-name { color: var(--purple); }
+.method-trend .method-icon { background: var(--primary-light); }
+.method-trend .method-name { color: var(--primary-dark); }
+.method-connect .method-icon { background: var(--blue-light); }
+.method-connect .method-name { color: var(--blue); }
+.method-think .method-icon { background: var(--pink-light); }
+.method-think .method-name { color: var(--pink); }
+
+/* ========== POOL TABS ========== */
+.pool-tabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.pool-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  cursor: pointer;
+  font-size: 13px;
+  transition: var(--transition);
+  font-weight: 500;
+}
+.pool-tab:hover { background: var(--bg-secondary); }
+.pool-tab.active-all { border-color: var(--border-color); }
+.pool-tab.active-opportunity { background: var(--primary-light); border-color: var(--primary-border); color: var(--primary-dark); }
+.pool-tab.active-observe { background: var(--yellow-light); border-color: var(--yellow-border); color: #b45309; }
+.pool-tab.active-archive { background: var(--red-light); border-color: var(--red-border); color: #b91c1c; }
+
+.pool-tab .dot { width: 8px; height: 8px; border-radius: 50%; }
+.pool-tab.active-opportunity .dot { background: var(--primary); }
+.pool-tab.active-observe .dot { background: var(--yellow); }
+.pool-tab.active-archive .dot { background: var(--red); }
+
+.pool-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+.pool-filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.view-toggle { display: flex; gap: 4px; }
+.view-btn {
+  width: 32px; height: 32px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-quaternary);
+}
+.view-btn.active { color: var(--primary); border-color: var(--primary-border); background: var(--primary-light); }
+
+/* ========== POOL BANNER ========== */
+.pool-banner {
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  transition: var(--transition);
+  position: relative;
+}
+.pool-banner.banner-opportunity { background: var(--primary-light); border: 1px solid var(--primary-border); }
+.pool-banner.banner-observe { background: var(--yellow-light); border: 1px solid var(--yellow-border); }
+.pool-banner.banner-archive { background: var(--red-light); border: 1px solid var(--red-border); }
+
+.pool-banner .banner-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+.pool-banner.banner-opportunity .banner-icon { color: var(--primary); }
+.pool-banner.banner-observe .banner-icon { color: var(--yellow); }
+.pool-banner.banner-archive .banner-icon { color: var(--red); }
+
+.pool-banner .banner-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.pool-banner.banner-opportunity .banner-title { color: #047857; }
+.pool-banner.banner-observe .banner-title { color: #92400e; }
+.pool-banner.banner-archive .banner-title { color: #991b1b; }
+
+.pool-banner .banner-desc {
+  font-size: 13px;
+  font-weight: 500;
+}
+.pool-banner.banner-opportunity .banner-desc { color: #059669; }
+.pool-banner.banner-observe .banner-desc { color: #b45309; }
+.pool-banner.banner-archive .banner-desc { color: #dc2626; }
+
+/* ========== CARDS GRID ========== */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.inspiration-card {
+  background: var(--bg-primary);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  transition: var(--transition);
+  cursor: pointer;
+}
+.inspiration-card:hover { box-shadow: var(--shadow); }
+
+.card-top-bar { height: 3px; transition: var(--transition); }
+.card-top-bar.opportunity { background: var(--primary); }
+.card-top-bar.observe { background: var(--yellow); }
+.card-top-bar.archive { background: var(--red); }
+
+.card-content { padding: 16px; }
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.card-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.4;
+  flex: 1;
+  padding-right: 8px;
+}
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.card-action-btn {
+  width: 28px; height: 28px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-quaternary);
+  transition: var(--transition);
+  position: relative;
+}
+.card-action-btn:hover { background: var(--bg-secondary); color: var(--text-primary); }
+.card-action-btn.favorited { color: var(--yellow); }
+
+/* Dropdown menu */
+.dropdown-menu {
+  position: absolute;
+  top: 32px; right: 0;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  min-width: 100px;
+  z-index: 50;
+  display: none;
+  overflow: hidden;
+}
+.dropdown-menu.show { display: block; }
+.dropdown-item {
+  padding: 8px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: var(--transition);
+  color: var(--text-secondary);
+}
+.dropdown-item:hover { background: var(--bg-secondary); }
+.dropdown-item.delete { color: var(--red); }
+.dropdown-item.delete:hover { background: var(--red-light); }
+
+.card-body {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.card-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 500;
+}
+.tag-life { background: var(--primary-light); color: var(--primary-dark); }
+.tag-product { background: var(--blue-light); color: var(--blue); }
+.tag-ai { background: var(--purple-light); color: var(--purple); }
+.tag-trend { background: var(--primary-light); color: var(--primary-dark); }
+.tag-connect { background: var(--blue-light); color: var(--blue); }
+.tag-think { background: var(--pink-light); color: var(--pink); }
+
+.card-time { font-size: 12px; color: var(--text-quaternary); }
+
+/* ========== PAGINATION ========== */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-light);
+}
+.pagination-pages {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.page-btn {
+  min-width: 32px; height: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-secondary);
+  transition: var(--transition);
+}
+.page-btn:hover { background: var(--bg-secondary); }
+.page-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.page-btn.arrow { color: var(--text-quaternary); }
+.page-btn.ellipsis { cursor: default; }
+.page-btn.ellipsis:hover { background: transparent; }
+
+.page-size {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+/* ========== MODAL ========== */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+}
+.modal-overlay.show { opacity: 1; visibility: visible; }
+
+.modal {
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  transform: scale(0.95);
+  transition: transform 0.2s ease;
+}
+.modal-overlay.show .modal { transform: scale(1); }
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-light);
+}
+.modal-title { font-size: 17px; font-weight: 600; }
+.modal-close {
+  width: 32px; height: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-quaternary);
+  font-size: 20px;
+  border: none; background: none;
+}
+.modal-close:hover { background: var(--bg-secondary); }
+
+.modal-body { padding: 24px; }
+
+.form-group { margin-bottom: 20px; }
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+.form-label .required { color: var(--red); }
+.form-input, .form-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  font-size: 14px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  outline: none;
+  transition: var(--transition);
+  font-family: var(--font-sans);
+}
+.form-input:focus, .form-textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(16,185,129,0.1);
+}
+.form-input::placeholder, .form-textarea::placeholder { color: var(--text-quaternary); }
+.form-textarea { min-height: 100px; resize: vertical; }
+
+/* Method selection in modal */
+.method-select-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.method-select-item {
+  padding: 10px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  cursor: pointer;
+  text-align: center;
+  transition: var(--transition);
+  position: relative;
+}
+.method-select-item:hover { border-color: var(--primary); }
+.method-select-item.selected {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+.method-select-item .check {
+  position: absolute;
+  top: 6px; right: 6px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  font-size: 10px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.method-select-item.selected .check { display: flex; }
+.method-select-item .ms-icon { font-size: 18px; margin-bottom: 4px; }
+.method-select-item .ms-name { font-size: 12px; font-weight: 600; }
+.method-select-item .ms-desc { font-size: 10px; color: var(--text-quaternary); }
+
+/* Pool selection in modal */
+.pool-select-group {
+  display: flex;
+  gap: 10px;
+}
+.pool-select-item {
+  flex: 1;
+  padding: 10px;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  cursor: pointer;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.pool-select-item:hover { border-color: var(--primary); }
+.pool-select-item.selected-opportunity {
+  background: var(--primary-light);
+  border-color: var(--primary);
+  color: var(--primary-dark);
+}
+.pool-select-item.selected-observe {
+  background: var(--yellow-light);
+  border-color: var(--yellow);
+  color: #b45309;
+}
+.pool-select-item.selected-archive {
+  background: var(--red-light);
+  border-color: var(--red);
+  color: #b91c1c;
+}
+
+.modal-footer {
+  padding: 16px 24px 24px;
+}
+.btn-primary {
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--radius);
+  background: var(--primary);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.btn-primary:hover { background: var(--primary-dark); }
+.btn-primary:disabled {
+  background: var(--text-quaternary);
+  cursor: not-allowed;
+}
+
+/* ========== TOAST ========== */
+.toast {
+  position: fixed;
+  top: 24px; left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  background: var(--text-primary);
+  color: white;
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  z-index: 2000;
+  opacity: 0;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ========== BANNER CLOSE ========== */
+.pool-banner .banner-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-quaternary);
+  font-size: 16px;
+  border: none;
+  background: transparent;
+  transition: var(--transition);
+  line-height: 1;
+}
+.pool-banner .banner-close:hover { background: rgba(0,0,0,0.05); color: var(--text-secondary); }
+
+/* ========== BANNER CONFIRM DIALOG ========== */
+.banner-confirm-dialog {
+  display: none;
+  padding: 14px 20px;
+  border-radius: var(--radius);
+  margin-bottom: 20px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.banner-confirm-dialog.show { display: flex; }
+.banner-confirm-dialog .confirm-text { font-size: 13px; color: var(--text-secondary); }
+.banner-confirm-dialog .confirm-actions { display: flex; gap: 8px; }
+.banner-confirm-dialog .btn-confirm {
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: var(--transition);
+}
+.banner-confirm-dialog .btn-confirm:hover { background: var(--bg-secondary); }
+.banner-confirm-dialog .btn-confirm-primary {
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--primary);
+  background: var(--primary);
+  font-size: 13px;
+  cursor: pointer;
+  color: white;
+  transition: var(--transition);
+}
+.banner-confirm-dialog .btn-confirm-primary:hover { background: var(--primary-dark); }
+
+/* ========== POOL TABS CONTAINER ========== */
+.pool-tabs-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+}
+
+/* Override pool-tab styles when inside container - smaller oval buttons */
+.pool-tabs-container .pool-tab {
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  background: transparent;
+}
+
+/* 未选中状态的椭圆按钮样式 - 统一色块，无边框 */
+.pool-tabs-container .pool-tab[data-pool="opportunity"],
+.pool-tabs-container .pool-tab[data-pool="observe"],
+.pool-tabs-container .pool-tab[data-pool="archive"] {
+  border-color: transparent;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+}
+
+/* Active states inside container - 选中也是色块无边框 */
+.pool-tabs-container .pool-tab.active-all {
+  border-color: transparent;
+  background: transparent;
+  color: var(--text-primary);
+}
+.pool-tabs-container .pool-tab.active-opportunity {
+  background: var(--primary-light);
+  border-color: transparent;
+  color: var(--primary-dark);
+}
+.pool-tabs-container .pool-tab.active-observe {
+  background: var(--yellow-light);
+  border-color: transparent;
+  color: #b45309;
+}
+.pool-tabs-container .pool-tab.active-archive {
+  background: var(--red-light);
+  border-color: transparent;
+  color: #b91c1c;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1024px) {
+  .sidebar { width: 200px; }
+  .main-content { margin-left: 200px; }
+}
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main-content { margin-left: 0; padding: 16px; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .method-cards { flex-wrap: wrap; }
+  .modal { width: 90%; }
+}
 </style>
+<base target="_blank">
+<base target="_blank">
+<base target="_blank">
 </head>
-<body class="bg-[#F9FAFB] font-sans text-gray-800 antialiased">
-<div class="flex min-h-screen">
+<body>
 
-  <!-- Sidebar - 纯白色 -->
-  <aside class="w-64 shrink-0 bg-white border-r border-gray-100 flex flex-col justify-between px-6 py-8">
+<div class="app-container">
+  <!-- Sidebar -->
+  <aside class="sidebar">
     <div>
-      <a href="dashboard.html" class="flex items-center gap-2">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center shadow-sm">
-          <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5 text-white"><path d="M21 8l-9-5-9 5 9 5 9-5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M3 8v8l9 5 9-5V8" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <div class="logo-area">
+        <div class="logo-icon">📦</div>
+        <div class="logo-text">云匣</div>
+      </div>
+      <div class="logo-sub">AI 产品成长训练平台</div>
+      <div class="logo-desc">采集 · 分析 · 复盘</div>
+
+      <div class="nav-section">
+        <div class="nav-label">训练旅程 TRAINING JOURNEY</div>
+        <div class="nav-item active" data-step="1" onclick="switchStep(1)">
+          <div class="timeline-connector"></div>
+          <div class="step-num">1</div>
+          <div class="nav-item-info">
+            <div class="nav-item-title">集 · 灵感</div>
+            <div class="nav-item-desc">Collect</div>
+            <div class="nav-item-desc">捕捉灵感，发现机会</div>
+          </div>
         </div>
-        <span class="text-lg font-bold text-gray-900">云匣</span>
-      </a>
-      <p class="text-xs text-gray-400 mt-2 leading-relaxed">AI 产品成长训练平台<br/>采集·分析·复盘</p>
-
-      <div class="mt-10">
-        <p class="text-[11px] font-medium text-gray-400 tracking-widest mb-4">训练旅程 <span class="text-gray-300">TRAINING JOURNEY</span></p>
-
-        <div class="relative pl-1">
-          <div class="absolute left-[19px] top-10 bottom-10 w-px border-l border-dashed border-brand-200"></div>
-
-          <div class="relative flex items-start gap-3 rounded-xl bg-brand-50 border border-brand-100 p-3 mb-3">
-            <div class="w-7 h-7 rounded-full bg-brand-600 text-white text-xs font-bold flex items-center justify-center shrink-0 z-10">1</div>
-            <div>
-              <p class="text-sm font-bold text-gray-900">集 · 灵感</p>
-              <p class="text-[11px] text-gray-400 tracking-wide">Collect</p>
-              <p class="text-xs text-gray-400 mt-0.5">捕捉灵感，发现机会</p>
-            </div>
+        <div class="nav-item" data-step="2" onclick="switchStep(2)">
+          <div class="step-num">2</div>
+          <div class="nav-item-info">
+            <div class="nav-item-title">研 · 项目</div>
+            <div class="nav-item-desc">Analyze</div>
+            <div class="nav-item-desc">分析洞察，验证机会</div>
           </div>
-
-          <div class="relative flex items-start gap-3 p-3 mb-3">
-            <div class="w-7 h-7 rounded-full bg-white border border-gray-200 text-gray-400 text-xs font-bold flex items-center justify-center shrink-0 z-10">2</div>
-            <div>
-              <p class="text-sm font-semibold text-gray-500">研 · 项目</p>
-              <p class="text-[11px] text-gray-300 tracking-wide">Analyze</p>
-              <p class="text-xs text-gray-300 mt-0.5">分析洞察，验证机会</p>
-            </div>
-          </div>
-
-          <div class="relative flex items-start gap-3 p-3">
-            <div class="w-7 h-7 rounded-full bg-white border border-gray-200 text-gray-400 text-xs font-bold flex items-center justify-center shrink-0 z-10">3</div>
-            <div>
-              <p class="text-sm font-semibold text-gray-500">思 · 复盘</p>
-              <p class="text-[11px] text-gray-300 tracking-wide">Reflect</p>
-              <p class="text-xs text-gray-300 mt-0.5">复盘沉淀，持续成长</p>
-            </div>
+        </div>
+        <div class="nav-item" data-step="3" onclick="switchStep(3)">
+          <div class="step-num">3</div>
+          <div class="nav-item-info">
+            <div class="nav-item-title">思 · 复盘</div>
+            <div class="nav-item-desc">Reflect</div>
+            <div class="nav-item-desc">复盘沉淀，持续成长</div>
           </div>
         </div>
       </div>
     </div>
 
-    <div>
-      <a href="#" class="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-800 pb-6 mb-6 border-b border-gray-100">
-        <svg viewBox="0 0 24 24" fill="none" class="w-[18px] h-[18px]"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.6"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33h.02A1.65 1.65 0 0010 3.09V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l-.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82v.02a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="currentColor" stroke-width="1.3"/></svg>
-        设置
-      </a>
-      <div class="rounded-xl border border-brand-200 bg-white p-4 flex items-center gap-3 hover:shadow-sm transition cursor-pointer">
-        <div class="w-9 h-9 rounded-lg bg-brand-50 flex items-center justify-center shrink-0">
-          <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5 text-brand-600"><path d="M12 2l3 3-3 3-3-3 3-3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M4 21l4-9 4 9M12 21l4-9 4 9" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-        </div>
-        <div class="flex-1">
-          <p class="text-sm font-bold text-gray-900">持续观察，持续成长</p>
-          <p class="text-xs text-gray-400">每一次记录，都是进步</p>
-        </div>
-        <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4 text-gray-300"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="sidebar-bottom">
+      <div class="sidebar-setting">
+        <span>⚙</span>
+        <span>设置</span>
+      </div>
+      <div class="growth-banner">
+        <div class="star">⭐</div>
+        <div class="title">持续观察，持续成长</div>
+        <div class="desc">每一次记录，都是进步</div>
       </div>
     </div>
   </aside>
 
-  <!-- Main - 背景 #F9FAFB -->
-  <main class="flex-1 px-10 py-8 bg-[#F9FAFB]">
-    <!-- top bar -->
-    <div class="flex items-start justify-between">
-      <div>
-        <div class="flex items-center gap-2">
-          <span class="w-1 h-6 bg-brand-600 rounded-full inline-block"></span>
-          <h1 class="text-2xl font-bold text-gray-900">灵感方式选择</h1>
-        </div>
-        <p class="text-sm text-gray-400 mt-1 ml-3">选择适合你的方式，持续发现和记录有价值的灵感</p>
-      </div>
-      <div class="flex items-center gap-3">
-        <div class="relative">
-          <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-          <input type="text" placeholder="搜索标题、内容、标签..." class="w-72 pl-9 pr-12 py-2 text-sm rounded-lg border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-brand-200"/>
-          <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-gray-400 border border-gray-200 rounded px-1 leading-none py-0.5">⌘K</span>
-        </div>
-        <button class="relative w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 shrink-0 bg-white">
-          <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4"><path d="M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 10-12 0v3.2a2 2 0 01-.6 1.4L4 17h5m6 0a3 3 0 11-6 0m6 0H9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-red-500"></span>
-        </button>
-        <!-- 登录后头像：品牌绿色底白色字 "观" -->
-        <div class="w-9 h-9 rounded-full bg-brand-600 text-white text-sm font-medium flex items-center justify-center shrink-0 cursor-pointer hover:bg-brand-700 transition">观</div>
-      </div>
-    </div>
-
-    <!-- category cards -->
-    <div class="grid grid-cols-6 gap-4 mt-6">
-      <div class="rounded-xl border border-gray-100 bg-white p-4 flex items-center gap-3 hover:shadow-md hover:border-brand-100 transition cursor-pointer">
-        <div class="w-10 h-10 rounded-lg bg-brand-50 flex items-center justify-center shrink-0">
-          <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5 text-brand-600"><path d="M12 21c-4-2-7-6-7-10a7 7 0 0114 0c0 4-3 8-7 10z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-        </div>
-        <div><p class="text-sm font-bold text-gray-900">生活观察</p><p class="text-xs text-gray-400">从日常中发现机会</p></div>
-      </div>
-      <div class="rounded-xl border border-gray-100 bg-white p-4 flex items-center gap-3 hover:shadow-md hover:border-brand-100 transition cursor-pointer">
-        <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
-          <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5 text-blue-500"><path d="M21 8l-9-5-9 5 9 5 9-5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M3 8v8l9 5 9-5V8" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-        </div>
-        <div><p class="text-sm font-bold text-gray-900">产品解析</p><p class="text-xs text-gray-400">拆解优秀产品</p></div>
-      </div>
-      <div class="rounded-xl border border-gray-100 bg-white p-4 flex items-center gap-3 hover:shadow-md hover:border-brand-100 transition cursor-pointer">
-        <div class="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center shrink-0">
-          <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5 text-purple-500"><circle cx="6" cy="6" r="2.4" stroke="currentColor" stroke-width="1.5"/><circle cx="18" cy="6" r="2.4" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="18" r="2.4" stroke="currentColor" stroke-width="1.5"/><path d="M8 7.2l7 9.2M16 7.2L9 16.4" stroke="currentColor" stroke-width="1.3"/></svg>
-        </div>
-        <div><p class="text-sm font-bold text-gray-900">AI 能力雷达</p><p class="text-xs text-gray-400">追踪 AI 发展能力</p></div>
-      </div>
-      <div class="rounded-xl border border-gray-100 bg-white p-4 flex items-center gap-3 hover:shadow-md hover:border-brand-100 transition cursor-pointer">
-        <div class="w-10 h-10 rounded-lg bg-brand-50 flex items-center justify-center shrink-0">
-          <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5 text-brand-600"><path d="M3 17l5-5 4 4 8-9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 7h5v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div><p class="text-sm font-bold text-gray-900">行业趋势</p><p class="text-xs text-gray-400">洞察行业变化</p></div>
-      </div>
-      <div class="rounded-xl border border-gray-100 bg-white p-4 flex items-center gap-3 hover:shadow-md hover:border-brand-100 transition cursor-pointer">
-        <div class="w-10 h-10 rounded-lg bg-sky-50 flex items-center justify-center shrink-0">
-          <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5 text-sky-500"><path d="M9 15l6-6M8 12L6 14a3.5 3.5 0 004.9 4.9l2-2M16 12l2-2a3.5 3.5 0 00-4.9-4.9l-2 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div><p class="text-sm font-bold text-gray-900">连接训练</p><p class="text-xs text-gray-400">跨域连接思维</p></div>
-      </div>
-      <div class="rounded-xl border border-gray-100 bg-white p-4 flex items-center gap-3 hover:shadow-md hover:border-brand-100 transition cursor-pointer">
-        <div class="w-10 h-10 rounded-lg bg-rose-50 flex items-center justify-center shrink-0">
-          <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5 text-rose-500"><path d="M12 20s-7-4.4-9.3-8.8C1.4 8 2.7 4.9 5.7 4.2c1.9-.4 3.7.4 4.8 1.9l1.5 2 1.5-2c1.1-1.5 2.9-2.3 4.8-1.9 3 .7 4.3 3.8 3 7C19 15.6 12 20 12 20z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-        </div>
-        <div><p class="text-sm font-bold text-gray-900">自想</p><p class="text-xs text-gray-400">自由思考空间</p></div>
-      </div>
-    </div>
-
-    <!-- tabs + filters -->
-    <div class="flex items-center justify-between mt-6">
-      <div class="flex items-center gap-1">
-        <button class="px-3 py-1.5 rounded-lg text-sm text-gray-500 hover:bg-gray-100 bg-white">全部 <span class="text-gray-400 ml-0.5">86</span></button>
-        <button class="px-3 py-1.5 rounded-lg text-sm bg-brand-50 text-brand-700 font-medium flex items-center gap-1">
-          <svg viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M8.5 12.5l2.3 2.3L15.5 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          机会池 <span class="ml-0.5">32</span>
-        </button>
-        <button class="px-3 py-1.5 rounded-lg text-sm text-gray-500 hover:bg-gray-100 flex items-center gap-1 bg-white">
-          <span class="w-3.5 h-3.5 rounded-full border-2 border-amber-400 inline-block"></span>
-          观察池 <span class="ml-0.5">28</span>
-        </button>
-        <button class="px-3 py-1.5 rounded-lg text-sm text-gray-500 hover:bg-gray-100 flex items-center gap-1 bg-white">
-          <svg viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5 text-red-400"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-          归档池 <span class="ml-0.5">26</span>
-        </button>
-      </div>
-      <div class="flex items-center gap-2">
-        <button class="px-3 py-1.5 rounded-lg border border-gray-200 text-sm text-gray-500 flex items-center gap-1.5 hover:bg-gray-100 bg-white">
-          <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4"><path d="M4 6h16M7 12h10M10 18h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-          筛选 <svg viewBox="0 0 24 24" fill="none" class="w-3 h-3 ml-0.5"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <button class="px-3 py-1.5 rounded-lg border border-gray-200 text-sm text-gray-500 flex items-center gap-1.5 hover:bg-gray-100 bg-white">
-          最新创建 <svg viewBox="0 0 24 24" fill="none" class="w-3 h-3 ml-0.5"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <div class="flex items-center border border-gray-200 rounded-lg overflow-hidden bg-white">
-          <button class="w-8 h-8 flex items-center justify-center bg-brand-600 text-white">
-            <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.6"/></svg>
-          </button>
-          <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:bg-gray-50">
-            <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- info banner -->
-    <div class="relative mt-4 bg-brand-50 border border-brand-100 rounded-xl px-5 py-4 flex items-center justify-between overflow-hidden">
-      <div class="flex items-start gap-3">
-        <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5 text-brand-600 mt-0.5 shrink-0"><path d="M9 18h6M10 21h4M12 3a6 6 0 00-3 11.2c.6.4 1 1 1 1.8h4c0-.8.4-1.4 1-1.8A6 6 0 0012 3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Top Bar - 已去掉 36K 和 + 按钮 -->
+    <div class="top-bar">
+      <div class="top-bar-left">
         <div>
-          <p class="text-sm font-bold text-gray-900">当前查看：机会池</p>
-          <p class="text-xs text-gray-500 mt-0.5">这里保存的是具有潜力、值得进一步分析和验证的灵感。</p>
+          <div class="page-title">
+            <span class="indicator"></span>
+            <span>灵感方式选择</span>
+          </div>
+          <div class="page-subtitle">选择适合你的方式，持续发现和记录有价值的灵感</div>
         </div>
       </div>
-      <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4 text-gray-300 shrink-0 cursor-pointer hover:text-gray-500"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-      <div class="absolute right-16 top-0 bottom-0 w-40 opacity-40 pointer-events-none hidden md:block">
-        <svg viewBox="0 0 100 60" class="w-full h-full"><path d="M10 50 L30 20 L50 40 L70 15 L90 35" stroke="#059669" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="60" y="30" width="24" height="20" rx="2" fill="#059669" fill-opacity="0.15"/></svg>
+      <div class="top-actions">
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" placeholder="搜索标题、内容、标签...">
+        </div>
+        <div class="top-action-btn" style="position:relative;">
+          🔔
+          <span style="position:absolute;top:4px;right:4px;width:8px;height:8px;background:var(--red);border-radius:50%;"></span>
+        </div>
+        <div class="user-avatar">观</div>
       </div>
     </div>
 
-    <!-- cards grid -->
-    <div class="grid grid-cols-4 gap-4 mt-4">
-      <!-- card 1 -->
-      <div class="rounded-xl border border-gray-100 overflow-hidden hover:shadow-md transition bg-white">
-        <div class="h-1 bg-brand-500"></div>
-        <div class="p-4">
-          <div class="flex items-start justify-between">
-            <p class="text-sm font-bold text-gray-900 leading-snug">社区共享厨房模式观察</p>
-            <div class="flex items-center gap-0.5 text-gray-300 shrink-0 ml-2 mt-0.5">
-              <svg viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5"><path d="M12 2l3 6.5 7 1-5 5 1.3 7L12 18l-6.3 3.5 1.3-7-5-5 7-1L12 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
-              <svg viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5"><circle cx="12" cy="5" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="12" cy="19" r="1.3" fill="currentColor"/></svg>
-            </div>
-          </div>
-          <p class="text-xs text-gray-400 mt-2 leading-relaxed line-clamp-2">在一个老旧小区内，看到有居民自发组织共享厨房，每人每月 100 元使用费，按时段预约，解决了独居老人做饭难...</p>
-          <div class="flex items-center justify-between mt-4">
-            <span class="text-xs px-2 py-0.5 rounded-md bg-brand-50 text-brand-700 font-medium">生活观察</span>
-            <span class="text-xs text-gray-400">2 小时前</span>
+    <!-- Inspiration Methods - 左右结构 -->
+    <div class="inspiration-section">
+      <div class="method-cards">
+        <div class="method-card method-life" onclick="openCreateModal('life')">
+          <div class="method-icon">🌱</div>
+          <div class="method-content">
+            <div class="method-name">生活观察</div>
+            <div class="method-desc">从日常中发现机会</div>
           </div>
         </div>
-      </div>
-
-      <!-- card 2 -->
-      <div class="rounded-xl border border-gray-100 overflow-hidden hover:shadow-md transition bg-white">
-        <div class="h-1 bg-brand-500"></div>
-        <div class="p-4">
-          <div class="flex items-start justify-between">
-            <p class="text-sm font-bold text-gray-900 leading-snug">AI 语音备忘录的使用场景</p>
-            <div class="flex items-center gap-0.5 text-gray-300 shrink-0 ml-2 mt-0.5">
-              <svg viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5"><path d="M12 2l3 6.5 7 1-5 5 1.3 7L12 18l-6.3 3.5 1.3-7-5-5 7-1L12 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
-              <svg viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5"><circle cx="12" cy="5" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="12" cy="19" r="1.3" fill="currentColor"/></svg>
-            </div>
-          </div>
-          <p class="text-xs text-gray-400 mt-2 leading-relaxed line-clamp-2">使用语音备忘录记录想法越来越频繁，特别是开车、散步、洗澡时，语音输入比打字更自然，未来可以结合 AI 自动...</p>
-          <div class="flex items-center justify-between mt-4">
-            <span class="text-xs px-2 py-0.5 rounded-md bg-blue-50 text-blue-600 font-medium">产品解析</span>
-            <span class="text-xs text-gray-400">5 小时前</span>
+        <div class="method-card method-product" onclick="openCreateModal('product')">
+          <div class="method-icon">📦</div>
+          <div class="method-content">
+            <div class="method-name">产品解析</div>
+            <div class="method-desc">拆解优秀产品</div>
           </div>
         </div>
-      </div>
-
-      <!-- card 3 -->
-      <div class="rounded-xl border border-gray-100 overflow-hidden hover:shadow-md transition bg-white">
-        <div class="h-1 bg-brand-500"></div>
-        <div class="p-4">
-          <div class="flex items-start justify-between">
-            <p class="text-sm font-bold text-gray-900 leading-snug">宠物情绪识别设备调研</p>
-            <div class="flex items-center gap-0.5 text-gray-300 shrink-0 ml-2 mt-0.5">
-              <svg viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5"><path d="M12 2l3 6.5 7 1-5 5 1.3 7L12 18l-6.3 3.5 1.3-7-5-5 7-1L12 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
-              <svg viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5"><circle cx="12" cy="5" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="12" cy="19" r="1.3" fill="currentColor"/></svg>
-            </div>
-          </div>
-          <p class="text-xs text-gray-400 mt-2 leading-relaxed line-clamp-2">看到市面上有宠物情绪识别项圈，可以识别焦虑、兴奋等情绪，但价格偏高，功能单一，市场教育成本较高...</p>
-          <div class="flex items-center justify-between mt-4">
-            <span class="text-xs px-2 py-0.5 rounded-md bg-amber-50 text-amber-600 font-medium">行业趋势</span>
-            <span class="text-xs text-gray-400">昨天 10:30</span>
+        <div class="method-card method-ai" onclick="openCreateModal('ai')">
+          <div class="method-icon">🔗</div>
+          <div class="method-content">
+            <div class="method-name">AI 能力雷达</div>
+            <div class="method-desc">追踪 AI 发展能力</div>
           </div>
         </div>
-      </div>
-
-      <!-- card 4 -->
-      <div class="rounded-xl border border-gray-100 overflow-hidden hover:shadow-md transition bg-white">
-        <div class="h-1 bg-brand-500"></div>
-        <div class="p-4">
-          <div class="flex items-start justify-between">
-            <p class="text-sm font-bold text-gray-900 leading-snug">线下自习室的运营机会</p>
-            <div class="flex items-center gap-0.5 text-gray-300 shrink-0 ml-2 mt-0.5">
-              <svg viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5"><path d="M12 2l3 6.5 7 1-5 5 1.3 7L12 18l-6.3 3.5 1.3-7-5-5 7-1L12 2z" stroke="#fbbf24" stroke-width="1.3" stroke-linejoin="round"/></svg>
-              <svg viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5"><circle cx="12" cy="5" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="12" cy="19" r="1.3" fill="currentColor"/></svg>
-            </div>
-          </div>
-          <p class="text-xs text-gray-400 mt-2 leading-relaxed line-clamp-2">观察到大学生对高质量自习室需求很大，但现有自习室存在座位紧张、环境嘈杂、价格不透明等问题，可优化空间体验...</p>
-          <div class="flex items-center justify-between mt-4">
-            <span class="text-xs px-2 py-0.5 rounded-md bg-sky-50 text-sky-600 font-medium">连接训练</span>
-            <span class="text-xs text-gray-400">昨天 09:15</span>
+        <div class="method-card method-trend" onclick="openCreateModal('trend')">
+          <div class="method-icon">📈</div>
+          <div class="method-content">
+            <div class="method-name">行业趋势</div>
+            <div class="method-desc">洞察行业变化</div>
           </div>
         </div>
-      </div>
-
-      <!-- card 5 -->
-      <div class="rounded-xl border border-gray-100 overflow-hidden hover:shadow-md transition bg-white">
-        <div class="h-1 bg-brand-500"></div>
-        <div class="p-4">
-          <div class="flex items-start justify-between">
-            <p class="text-sm font-bold text-gray-900 leading-snug">短视频平台的新功能记录</p>
-            <div class="flex items-center gap-0.5 text-gray-300 shrink-0 ml-2 mt-0.5">
-              <svg viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5"><path d="M12 2l3 6.5 7 1-5 5 1.3 7L12 18l-6.3 3.5 1.3-7-5-5 7-1L12 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
-              <svg viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5"><circle cx="12" cy="5" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="12" cy="19" r="1.3" fill="currentColor"/></svg>
-            </div>
-          </div>
-          <p class="text-xs text-gray-400 mt-2 leading-relaxed line-clamp-2">某平台上线了"一起看视频"功能，但使用率很低，可能因为入口隐藏，或社交关系链不够强，暂时不考虑相关方向...</p>
-          <div class="flex items-center justify-between mt-4">
-            <span class="text-xs px-2 py-0.5 rounded-md bg-blue-50 text-blue-600 font-medium">产品解析</span>
-            <span class="text-xs text-gray-400">05-18</span>
+        <div class="method-card method-connect" onclick="openCreateModal('connect')">
+          <div class="method-icon">⛓️</div>
+          <div class="method-content">
+            <div class="method-name">连接训练</div>
+            <div class="method-desc">跨域连接思维</div>
           </div>
         </div>
-      </div>
-
-      <!-- card 6 -->
-      <div class="rounded-xl border border-gray-100 overflow-hidden hover:shadow-md transition bg-white">
-        <div class="h-1 bg-brand-500"></div>
-        <div class="p-4">
-          <div class="flex items-start justify-between">
-            <p class="text-sm font-bold text-gray-900 leading-snug">AR 试妆功能体验记录</p>
-            <div class="flex items-center gap-0.5 text-gray-300 shrink-0 ml-2 mt-0.5">
-              <svg viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5"><path d="M12 2l3 6.5 7 1-5 5 1.3 7L12 18l-6.3 3.5 1.3-7-5-5 7-1L12 2z" stroke="#fbbf24" stroke-width="1.3" stroke-linejoin="round"/></svg>
-              <svg viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5"><circle cx="12" cy="5" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="12" cy="19" r="1.3" fill="currentColor"/></svg>
-            </div>
-          </div>
-          <p class="text-xs text-gray-400 mt-2 leading-relaxed line-clamp-2">尝试了几个 AR 试妆产品，识别精度不稳定，色彩还原有偏差，用户留存低，技术成熟度不足，暂时归档观察...</p>
-          <div class="flex items-center justify-between mt-4">
-            <span class="text-xs px-2 py-0.5 rounded-md bg-brand-50 text-brand-700 font-medium">生活观察</span>
-            <span class="text-xs text-gray-400">05-16</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- card 7 -->
-      <div class="rounded-xl border border-gray-100 overflow-hidden hover:shadow-md transition bg-white">
-        <div class="h-1 bg-brand-500"></div>
-        <div class="p-4">
-          <div class="flex items-start justify-between">
-            <p class="text-sm font-bold text-gray-900 leading-snug">智能家居需求调研笔记</p>
-            <div class="flex items-center gap-0.5 text-gray-300 shrink-0 ml-2 mt-0.5">
-              <svg viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5"><path d="M12 2l3 6.5 7 1-5 5 1.3 7L12 18l-6.3 3.5 1.3-7-5-5 7-1L12 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
-              <svg viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5"><circle cx="12" cy="5" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="12" cy="19" r="1.3" fill="currentColor"/></svg>
-            </div>
-          </div>
-          <p class="text-xs text-gray-400 mt-2 leading-relaxed line-clamp-2">调研发现用户更关注稳定性和隐私安全，对新功能兴趣度低，市场竞争激烈，进入壁垒高，暂不作为重点方向...</p>
-          <div class="flex items-center justify-between mt-4">
-            <span class="text-xs px-2 py-0.5 rounded-md bg-amber-50 text-amber-600 font-medium">行业趋势</span>
-            <span class="text-xs text-gray-400">05-14</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- card 8 -->
-      <div class="rounded-xl border border-gray-100 overflow-hidden hover:shadow-md transition bg-white">
-        <div class="h-1 bg-brand-500"></div>
-        <div class="p-4">
-          <div class="flex items-start justify-between">
-            <p class="text-sm font-bold text-gray-900 leading-snug">知识付费内容形式思考</p>
-            <div class="flex items-center gap-0.5 text-gray-300 shrink-0 ml-2 mt-0.5">
-              <svg viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5"><path d="M12 2l3 6.5 7 1-5 5 1.3 7L12 18l-6.3 3.5 1.3-7-5-5 7-1L12 2z" stroke="#fbbf24" stroke-width="1.3" stroke-linejoin="round"/></svg>
-              <svg viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5"><circle cx="12" cy="5" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="12" cy="19" r="1.3" fill="currentColor"/></svg>
-            </div>
-          </div>
-          <p class="text-xs text-gray-400 mt-2 leading-relaxed line-clamp-2">长视频课程完课率低，用户更喜欢碎片化内容结合实践，可能需要重新设计产品形态，后续再深入研究...</p>
-          <div class="flex items-center justify-between mt-4">
-            <span class="text-xs px-2 py-0.5 rounded-md bg-rose-50 text-rose-600 font-medium">自想</span>
-            <span class="text-xs text-gray-400">05-12</span>
+        <div class="method-card method-think" onclick="openCreateModal('think')">
+          <div class="method-icon">❤️</div>
+          <div class="method-content">
+            <div class="method-name">自想</div>
+            <div class="method-desc">自由思考空间</div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- pagination -->
-    <div class="flex items-center justify-between mt-6">
-      <div class="flex items-center gap-1">
-        <button class="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-gray-300 hover:bg-gray-100 bg-white">
-          <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <button class="w-8 h-8 rounded-lg bg-brand-600 text-white text-sm font-medium">1</button>
-        <button class="w-8 h-8 rounded-lg text-sm text-gray-500 hover:bg-gray-100 bg-white">2</button>
-        <button class="w-8 h-8 rounded-lg text-sm text-gray-500 hover:bg-gray-100 bg-white">3</button>
-        <button class="w-8 h-8 rounded-lg text-sm text-gray-500 hover:bg-gray-100 bg-white">4</button>
-        <button class="w-8 h-8 rounded-lg text-sm text-gray-500 hover:bg-gray-100 bg-white">5</button>
-        <span class="text-gray-300 px-1">...</span>
-        <button class="w-8 h-8 rounded-lg text-sm text-gray-500 hover:bg-gray-100 bg-white">12</button>
-        <button class="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-gray-400 hover:bg-gray-100 bg-white">
-          <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
+    <!-- Pool Tabs - 整体白色背景带线框容器 -->
+    <div class="pool-tabs" id="poolTabs">
+      <div class="pool-tabs-container">
+        <div class="pool-tab active-all" data-pool="all" style="cursor:default;user-select:none;">
+          <span>全部</span>
+          <span style="font-weight:600;margin-left:4px;" id="count-all">8</span>
+        </div>
+        <div class="pool-tab active-opportunity" data-pool="opportunity" onclick="switchPool('opportunity')">
+          <span class="dot" style="background:var(--primary);"></span>
+          <span>机会池</span>
+          <span style="font-weight:600;margin-left:4px;" id="count-opportunity">4</span>
+        </div>
+        <div class="pool-tab" data-pool="observe" onclick="switchPool('observe')">
+          <span class="dot" style="background:var(--yellow);"></span>
+          <span>观察池</span>
+          <span style="font-weight:600;margin-left:4px;" id="count-observe">2</span>
+        </div>
+        <div class="pool-tab" data-pool="archive" onclick="switchPool('archive')">
+          <span class="dot" style="background:var(--red);"></span>
+          <span>归档池</span>
+          <span style="font-weight:600;margin-left:4px;" id="count-archive">2</span>
+        </div>
       </div>
-      <button class="px-3 py-1.5 rounded-lg border border-gray-200 text-sm text-gray-500 flex items-center gap-1.5 hover:bg-gray-100 bg-white">
-        16 条/页 <svg viewBox="0 0 24 24" fill="none" class="w-3 h-3"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
+      <div class="pool-actions">
+        <div class="pool-filter-btn">筛选 ▼</div>
+        <div class="pool-filter-btn">最新创建 ▼</div>
+        <div class="view-toggle">
+          <div class="view-btn active" onclick="switchView('grid')">⊞</div>
+          <div class="view-btn" onclick="switchView('list')">☰</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pool Banner -->
+    <div class="pool-banner banner-opportunity" id="poolBanner">
+      <span class="banner-icon">💡</span>
+      <div>
+        <div class="banner-title">当前查看：机会池</div>
+        <div class="banner-desc">这里保存的是具有潜力、值得进一步分析和验证的灵感。</div>
+      </div>
+      <button class="banner-close" onclick="closeBanner()" title="关闭">✕</button>
+    </div>
+
+    <!-- Banner Close Confirm Dialog -->
+    <div class="banner-confirm-dialog" id="bannerConfirmDialog">
+      <span class="confirm-text">关闭后不再显示此提示？</span>
+      <div class="confirm-actions">
+        <button class="btn-confirm" onclick="confirmCloseBanner(false)">仅本次关闭</button>
+        <button class="btn-confirm-primary" onclick="confirmCloseBanner(true)">不再显示</button>
+      </div>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="cards-grid" id="cardsGrid"></div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+      <div class="pagination-pages">
+        <div class="page-btn arrow">◀</div>
+        <div class="page-btn active">1</div>
+        <div class="page-btn">2</div>
+        <div class="page-btn">3</div>
+        <div class="page-btn">4</div>
+        <div class="page-btn">5</div>
+        <div class="page-btn ellipsis">...</div>
+        <div class="page-btn">12</div>
+        <div class="page-btn arrow">▶</div>
+      </div>
+      <div class="page-size">
+        <span>16条/页</span>
+        <span>▼</span>
+      </div>
     </div>
   </main>
 </div>
+
+<!-- Create Modal -->
+<div class="modal-overlay" id="createModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">创建灵感</div>
+      <button class="modal-close" onclick="closeCreateModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">灵感标题 <span class="required">*</span></label>
+        <input type="text" class="form-input" placeholder="请输入灵感标题..." id="createTitle" oninput="validateForm()">
+      </div>
+      <div class="form-group">
+        <label class="form-label">灵感详情 <span class="required">*</span></label>
+        <textarea class="form-textarea" placeholder="请输入灵感详情，描述你的观察、想法或分析..." id="createDetail" oninput="validateForm()"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">灵感方式 <span style="color:var(--text-tertiary);font-weight:400;">（点击卡片时默认选中对应方式，可手动更改）</span></label>
+        <div class="method-select-grid" id="methodSelect">
+          <div class="method-select-item selected" data-method="life" onclick="selectMethod('life')">
+            <div class="check">✓</div>
+            <div class="ms-icon">🌱</div>
+            <div class="ms-name" style="color:var(--primary-dark);">生活观察</div>
+            <div class="ms-desc">从日常中发现机会</div>
+          </div>
+          <div class="method-select-item" data-method="product" onclick="selectMethod('product')">
+            <div class="check">✓</div>
+            <div class="ms-icon">📦</div>
+            <div class="ms-name" style="color:var(--blue);">产品解析</div>
+            <div class="ms-desc">拆解优秀产品</div>
+          </div>
+          <div class="method-select-item" data-method="ai" onclick="selectMethod('ai')">
+            <div class="check">✓</div>
+            <div class="ms-icon">🔗</div>
+            <div class="ms-name" style="color:var(--purple);">AI能力雷达</div>
+            <div class="ms-desc">追踪AI发展能力</div>
+          </div>
+          <div class="method-select-item" data-method="trend" onclick="selectMethod('trend')">
+            <div class="check">✓</div>
+            <div class="ms-icon">📈</div>
+            <div class="ms-name" style="color:var(--primary-dark);">行业趋势</div>
+            <div class="ms-desc">洞察行业变化</div>
+          </div>
+          <div class="method-select-item" data-method="connect" onclick="selectMethod('connect')">
+            <div class="check">✓</div>
+            <div class="ms-icon">⛓️</div>
+            <div class="ms-name" style="color:var(--blue);">连接训练</div>
+            <div class="ms-desc">跨域连接思维</div>
+          </div>
+          <div class="method-select-item" data-method="think" onclick="selectMethod('think')">
+            <div class="check">✓</div>
+            <div class="ms-icon">❤️</div>
+            <div class="ms-name" style="color:var(--pink);">自想</div>
+            <div class="ms-desc">自由思考空间</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">归属状态池 <span style="color:var(--text-tertiary);font-weight:400;">（默认「机会池」，决定卡片顶部色条颜色）</span></label>
+        <div class="pool-select-group" id="poolSelect">
+          <div class="pool-select-item selected-opportunity" data-pool="opportunity" onclick="selectPool('opportunity')">
+            <span>✓</span>
+            <span>机会池</span>
+          </div>
+          <div class="pool-select-item" data-pool="observe" onclick="selectPool('observe')">
+            <span>观察池</span>
+          </div>
+          <div class="pool-select-item" data-pool="archive" onclick="selectPool('archive')">
+            <span>归档池</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-primary" id="submitBtn" onclick="submitCreate()" disabled>完成</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ============ DATA ============
+let cards = [
+  { id: 1, title: "社区共享厨房模式观察", content: "在一个老旧小区内，看到有居民自发组织共享厨房，每人每月100元使用费，按时段预约，解决了独居老人做饭难的问题，也创造了社区社交场景...", type: "life", pool: "opportunity", time: "2小时前", favorited: false },
+  { id: 2, title: "AI 语音备忘录的使用场景", content: "使用语音备忘录记录想法越来越频繁，特别是开车、散步、洗澡时，语音输入比打字更自然，未来可以结合 AI 自动整理和分类...", type: "product", pool: "opportunity", time: "5小时前", favorited: false },
+  { id: 3, title: "宠物情绪识别设备调研", content: "看到市面上有宠物情绪识别项圈，可以识别焦虑、兴奋等情绪，但价格偏高，功能单一，市场教育成本较高...", type: "trend", pool: "opportunity", time: "昨天 10:30", favorited: false },
+  { id: 4, title: "线下自习室的运营机会", content: "观察到大学生对高质量自习室需求很大，但现有自习室存在座位紧张、环境嘈杂、价格不透明等问题，可优化空间体验...", type: "connect", pool: "opportunity", time: "昨天 09:15", favorited: false },
+  { id: 5, title: "短视频平台的新功能记录", content: "某平台上线了「一起看视频」功能，但使用率很低，可能因为入口隐藏，或社交关系链不够强，暂时不考虑相关方向...", type: "product", pool: "observe", time: "05-18", favorited: false },
+  { id: 6, title: "AR 试妆功能体验记录", content: "尝试了几个 AR 试妆产品，识别精度不稳定，色彩还原有偏差，用户留存率低，技术成熟度不足，暂时归档观察...", type: "life", pool: "observe", time: "05-16", favorited: false },
+  { id: 7, title: "智能家居需求调研笔记", content: "调研发现用户更关注稳定性和隐私安全，对新功能兴趣度低，市场竞争激烈，进入壁垒高，暂不作为重点方向...", type: "trend", pool: "archive", time: "05-14", favorited: false },
+  { id: 8, title: "知识付费内容形式思考", content: "长视频课程完课率低，用户更喜欢碎片化内容结合实践，可能需要重新设计产品形态，后续再深入研究...", type: "think", pool: "archive", time: "05-12", favorited: false },
+];
+
+const typeConfig = {
+  life: { label: "生活观察", class: "tag-life" },
+  product: { label: "产品解析", class: "tag-product" },
+  ai: { label: "AI能力雷达", class: "tag-ai" },
+  trend: { label: "行业趋势", class: "tag-trend" },
+  connect: { label: "连接训练", class: "tag-connect" },
+  think: { label: "自想", class: "tag-think" }
+};
+
+const poolConfig = {
+  opportunity: { color: "opportunity", bannerTitle: "当前查看：机会池", bannerDesc: "这里保存的是具有潜力、值得进一步分析和验证的灵感。" },
+  observe: { color: "observe", bannerTitle: "当前查看：观察池", bannerDesc: "这里保存的是需要持续观察、等待时机成熟的灵感。" },
+  archive: { color: "archive", bannerTitle: "当前查看：归档池", bannerDesc: "这里保存的是已经验证完毕或暂时搁置的灵感。" }
+};
+
+let currentPool = 'opportunity';
+let currentView = 'grid';
+let selectedMethod = 'life';
+let selectedPool = 'opportunity';
+let nextId = 9;
+
+// ============ RENDER ============
+function updateCounts() {
+  document.getElementById('count-all').textContent = cards.length;
+  document.getElementById('count-opportunity').textContent = cards.filter(c => c.pool === 'opportunity').length;
+  document.getElementById('count-observe').textContent = cards.filter(c => c.pool === 'observe').length;
+  document.getElementById('count-archive').textContent = cards.filter(c => c.pool === 'archive').length;
+}
+
+function renderCards(pool) {
+  const grid = document.getElementById('cardsGrid');
+  let displayCards = pool === 'all' ? cards : cards.filter(c => c.pool === pool);
+
+  if (displayCards.length === 0) {
+    grid.innerHTML = '<div style="text-align:center;padding:60px;color:var(--text-quaternary);">暂无灵感卡片</div>';
+    return;
+  }
+
+  grid.innerHTML = displayCards.map(card => {
+    const typeInfo = typeConfig[card.type];
+    return `
+      <div class="inspiration-card">
+        <div class="card-top-bar ${card.pool}"></div>
+        <div class="card-content">
+          <div class="card-header">
+            <div class="card-title">${card.title}</div>
+            <div class="card-actions">
+              <div class="card-action-btn ${card.favorited ? 'favorited' : ''}" onclick="toggleFavorite(${card.id}, event)">☆</div>
+              <div class="card-action-btn" onclick="toggleDropdown(${card.id}, event)" style="position:relative;">
+                ⋮
+                <div class="dropdown-menu" id="dropdown-${card.id}">
+                  <div class="dropdown-item" onclick="editCard(${card.id}, event)">✏️ 编辑</div>
+                  <div class="dropdown-item delete" onclick="deleteCard(${card.id}, event)">🗑️ 删除</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">${card.content}</div>
+          <div class="card-footer">
+            <span class="card-tag ${typeInfo.class}">${typeInfo.label}</span>
+            <span class="card-time">${card.time}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function updateBanner(pool) {
+  const banner = document.getElementById('poolBanner');
+  if (pool === 'all') {
+    banner.className = 'pool-banner banner-opportunity';
+    banner.querySelector('.banner-title').textContent = '当前查看：全部灵感';
+    banner.querySelector('.banner-desc').textContent = '展示所有状态的灵感卡片，包括机会池、观察池和归档池。';
+    return;
+  }
+  const cfg = poolConfig[pool];
+  banner.className = `pool-banner banner-${cfg.color}`;
+  banner.querySelector('.banner-title').textContent = cfg.bannerTitle;
+  banner.querySelector('.banner-desc').textContent = cfg.bannerDesc;
+}
+
+// ============ POOL SWITCHING ============
+function switchPool(pool) {
+  currentPool = pool;
+
+  document.querySelectorAll('.pool-tab').forEach(t => {
+    t.classList.remove('active-all', 'active-opportunity', 'active-observe', 'active-archive');
+  });
+
+  const activeTab = document.querySelector(`.pool-tab[data-pool="${pool}"]`);
+  if (pool === 'all') activeTab.classList.add('active-all');
+  else activeTab.classList.add(`active-${pool}`);
+
+  renderCards(pool);
+  updateBanner(pool);
+}
+
+// Pool tab hover for banner preview
+document.querySelectorAll('.pool-tab').forEach(tab => {
+  tab.addEventListener('mouseenter', () => {
+    const pool = tab.dataset.pool;
+    if (pool === 'all') return;
+    updateBanner(pool);
+  });
+  tab.addEventListener('mouseleave', () => {
+    updateBanner(currentPool);
+  });
+});
+
+// ============ SIDEBAR STEP SWITCHING ============
+function switchStep(step) {
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.classList.remove('active');
+    if (parseInt(item.dataset.step) === step) item.classList.add('active');
+  });
+  showToast(`已切换到步骤 ${step}`);
+}
+
+// ============ VIEW TOGGLE ============
+function switchView(view) {
+  currentView = view;
+  document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  renderCards(currentPool);
+}
+
+// ============ CARD ACTIONS ============
+function toggleFavorite(id, e) {
+  e.stopPropagation();
+  const card = cards.find(c => c.id === id);
+  if (card) {
+    card.favorited = !card.favorited;
+    renderCards(currentPool);
+    showToast(card.favorited ? '收藏成功' : '已取消收藏');
+  }
+}
+
+function toggleDropdown(id, e) {
+  e.stopPropagation();
+  document.querySelectorAll('.dropdown-menu').forEach(m => {
+    if (m.id !== `dropdown-${id}`) m.classList.remove('show');
+  });
+  const menu = document.getElementById(`dropdown-${id}`);
+  menu.classList.toggle('show');
+}
+
+function editCard(id, e) {
+  e.stopPropagation();
+  showToast('编辑功能开发中...');
+  document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
+}
+
+function deleteCard(id, e) {
+  e.stopPropagation();
+  if (confirm('确定要删除这条灵感吗？')) {
+    cards = cards.filter(c => c.id !== id);
+    updateCounts();
+    renderCards(currentPool);
+    showToast('删除成功');
+  }
+  document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
+}
+
+// Close dropdowns on outside click
+document.addEventListener('click', () => {
+  document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
+});
+
+// ============ CREATE MODAL ============
+function openCreateModal(method) {
+  selectedMethod = method || 'life';
+  selectedPool = 'opportunity';
+
+  document.getElementById('createTitle').value = '';
+  document.getElementById('createDetail').value = '';
+
+  selectMethod(selectedMethod);
+  selectPool(selectedPool);
+  validateForm();
+
+  document.getElementById('createModal').classList.add('show');
+}
+
+function closeCreateModal() {
+  document.getElementById('createModal').classList.remove('show');
+}
+
+function selectMethod(method) {
+  selectedMethod = method;
+  document.querySelectorAll('.method-select-item').forEach(item => {
+    item.classList.remove('selected');
+    if (item.dataset.method === method) item.classList.add('selected');
+  });
+}
+
+function selectPool(pool) {
+  selectedPool = pool;
+  document.querySelectorAll('.pool-select-item').forEach(item => {
+    item.className = 'pool-select-item';
+    if (item.dataset.pool === pool) item.classList.add(`selected-${pool}`);
+  });
+}
+
+function validateForm() {
+  const title = document.getElementById('createTitle').value.trim();
+  const detail = document.getElementById('createDetail').value.trim();
+  document.getElementById('submitBtn').disabled = !(title && detail);
+}
+
+function submitCreate() {
+  const title = document.getElementById('createTitle').value.trim();
+  const detail = document.getElementById('createDetail').value.trim();
+
+  if (!title || !detail) return;
+
+  const newCard = {
+    id: nextId++,
+    title: title,
+    content: detail,
+    type: selectedMethod,
+    pool: selectedPool,
+    time: "刚刚",
+    favorited: false
+  };
+
+  const poolCards = cards.filter(c => c.pool === selectedPool);
+  const insertIndex = poolCards.length > 0 ? cards.indexOf(poolCards[0]) : cards.length;
+  cards.splice(insertIndex, 0, newCard);
+
+  updateCounts();
+  closeCreateModal();
+  switchPool(selectedPool);
+  showToast('灵感创建成功');
+}
+
+// Close modal on overlay click
+document.getElementById('createModal').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('createModal')) closeCreateModal();
+});
+
+// ESC to close modal
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeCreateModal();
+});
+
+// ============ TOAST ============
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2000);
+}
+
+// ============ BANNER CLOSE ============
+function closeBanner() {
+  document.getElementById('poolBanner').style.display = 'none';
+  document.getElementById('bannerConfirmDialog').classList.add('show');
+}
+
+function confirmCloseBanner(neverShow) {
+  document.getElementById('bannerConfirmDialog').classList.remove('show');
+  if (neverShow) {
+    localStorage.setItem('bannerClosed', 'true');
+    showToast('已设置不再显示提示');
+  }
+}
+
+// Check if banner was previously closed
+function checkBannerState() {
+  if (localStorage.getItem('bannerClosed') === 'true') {
+    document.getElementById('poolBanner').style.display = 'none';
+  }
+}
+
+// ============ INIT ============
+checkBannerState();
+updateCounts();
+renderCards('opportunity');
+</script>
+
 </body>
 </html>
